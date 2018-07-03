@@ -1,0 +1,59 @@
+<app-section-header>my Favourites</app-section-header>
+<section fxLayout="row" fxLayout.xs="column">
+  <!-- <mat-list *ngFor="let station of myStations | async">
+      <mat-card>
+        <mat-card-content routerLink="{{station.id}}" >
+            <img mat-card-image src="{{station.logo}}" alt="{{station.name}}">
+              <h2>{{station.name}}</h2>
+              <small>{{station.city}}, {{station.state}} &bull; {{station.frequency}}</small>
+        </mat-card-content>
+      </mat-card>
+  </mat-list> -->
+  <mat-card *ngFor="let station of myStations">
+    <mat-card-content routerLink="{{station.id}}" >
+      <div class="container">
+        <img mat-card-image src="{{station.logo ? station.logo : 'assets/images/radio.svg'}}" alt="{{station.name}}">
+      </div>
+    </mat-card-content>
+    <div class="content">
+      <h2>{{station.name}}</h2>
+      <small>{{station.city}}, {{station.state}} &bull; {{station.frequency}}</small>
+      <mat-card-actions align="end">
+        <button mat-icon-button (click)="play(station.id)">
+          <mat-icon>play_circle_outline</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>favorite_border</mat-icon>
+            <span>Add to Favourite</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="sharemenu">
+            <mat-icon>share</mat-icon>
+            <span>Sharing</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit Station</span>
+          </button>
+        </mat-menu>
+        <mat-menu #sharemenu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>share</mat-icon>
+            <span>Share this station</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>check_circle</mat-icon>
+            <span>Add to share list</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>send</mat-icon>
+            <span>Share all selected</span>
+          </button>
+        </mat-menu>
+      </mat-card-actions>
+    </div>
+  </mat-card>
+</section>

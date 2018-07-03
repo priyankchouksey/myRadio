@@ -5,7 +5,12 @@
 export const environment = {
   production: false,
   firebase: {
-
+    apiKey: 'AIzaSyAsHgDfdG7YU53hnKjJGKCJWIO6x0h8OU8',
+    authDomain: 'my-radio-2016b.firebaseapp.com',
+    databaseURL: 'https://my-radio-2016b.firebaseio.com',
+    projectId: 'my-radio-2016b',
+    storageBucket: 'my-radio-2016b.appspot.com',
+    messagingSenderId: '560677824997'
   }
 };
 

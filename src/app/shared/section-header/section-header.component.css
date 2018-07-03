@@ -1,0 +1,18 @@
+.section-header {
+  border-bottom: 2px solid #000;
+  margin-top: 5px;
+    margin-bottom: 30px;
+    height: 16px;
+    width: 100%;
+}
+.section-header-title {
+  background: white;
+    color: black;
+    display: inline-block;
+    font-family: montserratregular,Arial,Helvetica,sans-serif;
+    font-size: 21px;
+    font-weight: bold;
+    height: 22px;
+    letter-spacing: -1px;
+    padding: 2px 11px;
+}

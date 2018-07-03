@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span [routerLink]="auth.afAuth.authState ? ['/myStations'] : ['/home']">myRadio</span>
+    <span class="spacer"></span>
+    <div *ngIf="auth.afAuth.authState | async as user; else showLogin">
+      <button mat-raised-button color="accent" routerLink="/station">Create Station</button>
+      <button mat-button (click)="auth.logout()">Sign Out</button>
+    </div>
+    <ng-template #showLogin>
+        <button mat-button (click)="auth.login()">Sign In</button>
+    </ng-template>
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,41 @@
+section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  grid-template-rows: auto;
+  grid-gap: 20px;
+  margin: 0 auto;
+  max-width: 90%;
+}
+mat-card {
+  /* max-width: 200px; */
+  margin: 0 ;
+  padding: 0;
+  border-radius: 5px;
+}
+mat-card p, h2 {
+  align: 'end';
+  margin: 0 ;
+
+}
+mat-card img {
+  object-fit: cover;
+  width: 100%;
+  height: 180px;
+  /* width: 180px; */
+  /* padding: 10px; */
+  margin: 0 ;
+}
+mat-card-content, mat-card-actions {
+  margin: 0;
+}
+.container{
+  padding: 0;
+  width: 200px;
+}
+.content {
+  background-color: black;
+  color: white;
+  /* opacity: .75; */
+  bottom: 0px;
+  padding-left: 10px;
+}

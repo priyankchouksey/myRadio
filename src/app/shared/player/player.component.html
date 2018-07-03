@@ -1,0 +1,17 @@
+<mat-toolbar color='primary'>
+  <mat-toolbar-row>
+      <div class="area">
+          <img class="content" src="https://source.unsplash.com/random/200x200">
+      </div>
+      <span class='spacer'></span>
+      <button mat-icon-button (click)="onPrevious()">
+        <mat-icon class="circle">skip_previous</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" class="circle" (click)="onPlay()">
+        <mat-icon>{{ isPlaying ? 'stop' : 'play_arrow' }}</mat-icon>
+      </button>
+      <button mat-icon-button (click)="onNext()">
+        <mat-icon class="circle">skip_next</mat-icon>
+      </button>
+  </mat-toolbar-row>
+</mat-toolbar>

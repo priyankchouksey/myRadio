@@ -1,0 +1,28 @@
+.spacer {
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+.circle{
+  border: 1px solid black;
+  border-radius: 50%;
+}
+mat-toolbar {
+  position: fixed;
+  bottom: 0px;
+  border-top: 2px;
+  border-color: gray;
+}
+.area{
+  margin:5px;
+  text-align: center;
+  display:block;
+  float: left;
+}
+
+.content {
+  display:table-cell;
+  vertical-align:middle;
+  border-radius: 50%;
+  height: 50px;
+}
