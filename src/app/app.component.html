@@ -2,4 +2,4 @@
 <div class="appcontainer">
   <router-outlet></router-outlet>
 </div>
-<app-player></app-player>
+<app-player *ngIf="auth.afAuth.authState | async as user"></app-player>

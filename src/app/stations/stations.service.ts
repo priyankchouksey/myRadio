@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument,
 
 import { Station, UserStation } from '../shared/station';
 import { Action } from 'rxjs/internal/scheduler/Action';
-import { map } from 'rxjs/operators';
+import { map, retry } from 'rxjs/operators';
 import { AuthService } from '../core/auth.service';
 import { User } from '../core/core.module';
 import { AngularFireStorage } from 'angularfire2/storage';
@@ -82,21 +82,34 @@ export class StationsService {
       let query: any = queryRef;
       query = query.where('userid', '==', userID);
       return query;
-    }).snapshotChanges().pipe(map(actions => {
-      return actions.map(item => {
-        console.log(item.payload.doc.data());
-        const usdata: any = item.payload.doc.data();
-        const usID = item.payload.doc.id;
-        usdata.stationRef.get().then(res => {
-          const id = res.id;
-          const sdata = res.data();
-          console.log({id, usID, ...sdata});
-          this.myStations.next( {id, usID, ...sdata});
-        });
-        // const id = item.payload.doc.id;
-        // return {id, ...data};
+    }).ref.get().then(res => {
+      res.forEach(doc => {
+        const usdata: any = doc.data();
+        const usID = doc.id;
+        if (usdata.stationRef) {
+          usdata.stationRef.get().then(station => {
+            const id = station.id;
+            const sdata = station.data();
+            this.myStations.next({id, usID, ...sdata, ...usdata});
+          });
+        }
       });
-    }));
+    });
+    // .snapshotChanges().pipe(map(actions => {
+    //   return actions.map(item => {
+    //     console.log(item.payload.doc.data());
+    //     const usdata: any = item.payload.doc.data();
+    //     const usID = item.payload.doc.id;
+    //     usdata.stationRef.get().then(res => {
+    //       const id = res.id;
+    //       const sdata = res.data();
+    //       console.log({id, usID, ...sdata});
+    //       this.myStations.next( {id, usID, ...sdata});
+    //     });
+    //     // const id = item.payload.doc.id;
+    //     // return {id, ...data};
+    //   });
+    // }));
    }
    getStation(id: string) {
     return this.ngFs.doc<Station>('/stations/${id}');
@@ -137,5 +150,10 @@ export class StationsService {
    }
    getNewID() {
      return this.ngFs.createId();
+   }
+   mapStationData(station: any, userStation: any): Station {
+    let retVal: Station;
+
+    return retVal;
    }
 }

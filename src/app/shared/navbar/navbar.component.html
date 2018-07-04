@@ -2,12 +2,19 @@
   <mat-toolbar-row>
     <span [routerLink]="auth.afAuth.authState ? ['/myStations'] : ['/home']">myRadio</span>
     <span class="spacer"></span>
-    <div *ngIf="auth.afAuth.authState | async as user; else showLogin">
+    <!-- <div *ngIf="auth.afAuth.authState | async as user; else showLogin">
       <button mat-raised-button color="accent" routerLink="/station">Create Station</button>
-      <button mat-button (click)="auth.logout()">Sign Out</button>
-    </div>
-    <ng-template #showLogin>
-        <button mat-button (click)="auth.login()">Sign In</button>
-    </ng-template>
+      <button mat-button >Sign Out</button>
+    </div> -->
+    <!-- <ng-template #showLogin> -->
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <img style="height: 34px; width: 34px;" src="../../../assets/images/user-icon.png">
+        </button>
+        <mat-menu #menu="matMenu" yPosition="above" xPosition="before">
+          <button mat-menu-item *ngIf="!isUserLoggedIn" (click)="signIn()"> Sign In</button>
+          <button mat-menu-item *ngIf="isUserLoggedIn" (click)="createStation()">Create New Station</button>
+          <button mat-menu-item *ngIf="isUserLoggedIn" (click)="signOut()">Sign Out</button>
+        </mat-menu>
+    <!-- </ng-template> -->
   </mat-toolbar-row>
 </mat-toolbar>
