@@ -8,7 +8,8 @@ import { Station } from '../station';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-  audioPlayer = new Audio('http://ice10.securenetsystems.net/HUMFM');
+  url = 'http://ice10.securenetsystems.net/HUMFM';
+  audioPlayer = new Audio(this.url);
   isPlaying: boolean;
   constructor(private playerSrvc: PlayerService) { }
 
@@ -23,6 +24,9 @@ export class PlayerComponent implements OnInit {
     this.isPlaying = !this.isPlaying;
     if (this.isPlaying) {
       this.audioPlayer.play();
+      // nir.getStationInfo(this.url, function(value) {
+      //   console.log(value);
+      // });
     } else {
       this.audioPlayer.pause();
     }

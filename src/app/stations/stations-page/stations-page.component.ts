@@ -35,4 +35,11 @@ export class StationsPageComponent implements OnInit {
   play(station) {
 
   }
+  addToFav(station: Station) {
+    station.favourite = !station.favourite;
+    this.stationSrvc.updateUserStation(station);
+  }
+  updateStation(station: Station) {
+    this.stationSrvc.update(station);
+  }
 }

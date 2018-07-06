@@ -90,7 +90,7 @@ export class StationsService {
           usdata.stationRef.get().then(station => {
             const id = station.id;
             const sdata = station.data();
-            this.myStations.next({id, usID, ...sdata, ...usdata});
+            this.myStations.next(new Station({id, usID, ...sdata, ...usdata}));
           });
         }
       });
@@ -112,15 +112,18 @@ export class StationsService {
     // }));
    }
    getStation(id: string) {
-    return this.ngFs.doc<Station>('/stations/${id}');
+    return this.ngFs.doc<Station>(`/stations/${id}`);
+   }
+   getUserStation(id: string) {
+     return this.ngFs.doc<any>(`/userstations/${id}`);
    }
    create(data: Station) {
     const statData: any = {
       name: data.name,
       frequency: data.frequency,
-      city: data.city,
-      state: data.state,
-      county: data.country,
+      city: data.geo.city,
+      state: data.geo.state,
+      county: data.geo.country,
       playurl: data.playurl,
       logo: data.logo,
       assistantkeyword: data.assistKeyword,
@@ -144,6 +147,7 @@ export class StationsService {
    update(data: Station) {
      const statData: any = {
        name: data.name,
+       frequency: data.frequency,
        playurl: data.playurl,
       };
     return this.getStation(data.id).update(statData);
@@ -151,9 +155,12 @@ export class StationsService {
    getNewID() {
      return this.ngFs.createId();
    }
-   mapStationData(station: any, userStation: any): Station {
-    let retVal: Station;
-
-    return retVal;
+   updateUserStation(data: Station) {
+    const usData: any = {
+      favourite: data.favourite,
+      isplaying: data.playing
+    };
+    const doc = this.getUserStation(data.userstatioid);
+    return doc.update(usData);
    }
 }

@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { StationsPageComponent } from './stations-page/stations-page.component';
 import { StationsService } from './stations.service';
 import { StationPageComponent } from './station-page/station-page.component';
+import { FavStationsPipe } from './fav-stations.pipe';
 
 const routes: Routes = [
   { path: 'station', component: StationPageComponent},
@@ -15,7 +16,7 @@ const routes: Routes = [
     SharedModule, RouterModule.forChild(routes)
   ],
   exports: [StationPageComponent, StationsPageComponent],
-  declarations: [StationsPageComponent, StationPageComponent],
+  declarations: [StationsPageComponent, StationPageComponent, FavStationsPipe],
   providers: [StationsService]
 })
 export class StationsModule { }
