@@ -28,59 +28,10 @@ export class StationsService {
    getStations() {
      return this.myStations;
    }
-  //  getmyStations(userID: string) {
-  // return this.ngFs.collection('userstations',
-  //   queryRef => queryRef.where('userid', '==', userID))
-  //   .snapshotChanges().map(.pipe(map(actions => {
-  //     return actions.map(action => {
-  //       console.log(action.payload.doc.data());
-  //       const usdata = action.payload.doc.data();
-  //       const usID = action.payload.doc.id;
-  //       return usdata.stationRef.get().then(res => {
-  //         const id = res.id;
-  //         const sdata = res.data();
-  //         console.log({id, usID, ...sdata});
-  //         return {id, usID, ...sdata};
-  //       });
-  //       // const id = item.payload.doc.id;
-  //       // return {id, ...data};
-  //     }).;
-  //   }));
-  //  }
-   refreshStations(userID: string) {
-    // this.myStations = new Array<Station>();
-    // const data = this.ngFs.collection('userstations', queryRef => {
-    //     let query: any = queryRef;
-    //     query = query.where('userid', '==', userID);
-    //     return query;
-    //   }).snapshotChanges();
-    // data.subscribe((items) => {
-    //   console.log(items);
-    // });
-    // return null;
-
-    // return this.ngFs.collection('userstations', queryRef => {
-    //   let query: any = queryRef;
-    //   query = query.where('userid', '==', userID);
-    //   return query;
-    // }).snapshotChanges().pipe(map(actions => {
-    //   return actions.map(item => {
-    //     console.log(item.payload.doc.data());
-    //     const usdata = item.payload.doc.data();
-    //     const usID = item.payload.doc.id;
-    //     return usdata.stationRef.get().then(res => {
-    //       const id = res.id;
-    //       const sdata = res.data();
-    //       console.log({id, usID, ...sdata});
-    //       return {id, usID, ...sdata};
-    //     }).pipe((x) => x);
-    //     // const id = item.payload.doc.id;
-    //     // return {id, ...data};
-    //   });
-    // }));
+   refreshStations(userID?: string) {
     this.ngFs.collection('userstations', queryRef => {
       let query: any = queryRef;
-      query = query.where('userid', '==', userID);
+      query = query.where('userid', '==', this.user.id);
       return query;
     }).ref.get().then(res => {
       res.forEach(doc => {
@@ -95,21 +46,6 @@ export class StationsService {
         }
       });
     });
-    // .snapshotChanges().pipe(map(actions => {
-    //   return actions.map(item => {
-    //     console.log(item.payload.doc.data());
-    //     const usdata: any = item.payload.doc.data();
-    //     const usID = item.payload.doc.id;
-    //     usdata.stationRef.get().then(res => {
-    //       const id = res.id;
-    //       const sdata = res.data();
-    //       console.log({id, usID, ...sdata});
-    //       this.myStations.next( {id, usID, ...sdata});
-    //     });
-    //     // const id = item.payload.doc.id;
-    //     // return {id, ...data};
-    //   });
-    // }));
    }
    getStation(id: string) {
     return this.ngFs.doc<Station>(`/stations/${id}`);

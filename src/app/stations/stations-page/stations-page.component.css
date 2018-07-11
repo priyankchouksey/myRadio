@@ -46,3 +46,7 @@ mat-card-content, mat-card-actions {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
 }
+mat-divider {
+  border-top-color: wheat;
+  margin-top: 3px;
+}

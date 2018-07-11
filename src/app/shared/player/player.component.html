@@ -3,14 +3,18 @@
       <div class="area">
           <img class="content" src="https://source.unsplash.com/random/200x200">
       </div>
+      <div class="info-container" *ngIf="playinInfo | async; let info">
+        <h3>{{info.title}}</h3>
+        <small>{{info.nowPlaying}}</small>
+      </div>
       <span class='spacer'></span>
-      <button mat-icon-button (click)="onPrevious()">
+      <button mat-icon-button (click)="onPrevious()" [disabled]="!playerSrvc.canGoPrevious">
         <mat-icon class="circle">skip_previous</mat-icon>
       </button>
       <button mat-icon-button color="accent" class="circle" (click)="onPlay()">
-        <mat-icon>{{ isPlaying ? 'stop' : 'play_arrow' }}</mat-icon>
+        <mat-icon>{{ playerSrvc.isPlaying ? 'stop' : 'play_arrow' }}</mat-icon>
       </button>
-      <button mat-icon-button (click)="onNext()">
+      <button mat-icon-button (click)="onNext()" [disabled]="!playerSrvc.canGoNext">
         <mat-icon class="circle">skip_next</mat-icon>
       </button>
   </mat-toolbar-row>

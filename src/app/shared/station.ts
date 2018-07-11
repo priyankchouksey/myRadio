@@ -43,3 +43,11 @@ export class GeoLocation {
   country: string;
   state: string;
 }
+export class PlayingInfo {
+  title: string;
+  nowPlaying: string;
+  constructor(title: string, nowPlaying: string) {
+    this.title = title;
+    this.nowPlaying = nowPlaying;
+  }
+}

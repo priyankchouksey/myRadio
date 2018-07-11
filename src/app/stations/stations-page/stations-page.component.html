@@ -8,13 +8,14 @@
     </mat-card-content>
     <div class="content">
       <h2>{{station.name}}</h2>
-      <small>{{station.geo.city}}, {{station.geo.state}} &bull; {{station.frequency}}</small>
+      <small>{{station.frequency}} &bull; {{station.geo.city}}, {{station.geo.state}}</small>
+      <mat-divider></mat-divider>
       <mat-card-actions align="end">
-        <button mat-icon-button (click)="play(station.id)">
-          <mat-icon>play_circle_outline</mat-icon>
+        <button mat-icon-button (click)="play(station)">
+          <mat-icon>{{station.playing ? 'stop' : 'play_arrow'}}</mat-icon>
         </button>
         <span class="spacer"></span>
-        <button mat-icon-button (click)="addToFav(station)">
+        <button mat-icon-button (click)="changeFav(station)">
             <mat-icon>{{station.favourite ? 'favorite' : 'favorite_border'}}</mat-icon>
             <!-- <span>Add to Favourite</span> -->
           </button>
@@ -60,13 +61,14 @@
     </mat-card-content>
     <div class="content">
       <h2>{{station.name}}</h2>
-      <small>{{station.geo.city}}, {{station.geo.state}} &bull; {{station.frequency}}</small>
+      <small>{{station.frequency}} &bull; {{station.geo.city}}, {{station.geo.state}}</small>
+      <mat-divider></mat-divider>
       <mat-card-actions align="end">
-        <button mat-icon-button (click)="play(station.id)">
-          <mat-icon>play_circle_outline</mat-icon>
+        <button mat-icon-button (click)="play(station)">
+          <mat-icon>{{station.playing ? 'stop' : 'play_arrow'}}</mat-icon>
         </button>
         <span class="spacer"></span>
-        <button mat-icon-button (click)="addToFav(station)">
+        <button mat-icon-button (click)="changeFav(station)">
             <mat-icon>{{station.favourite ? 'favorite' : 'favorite_border'}}</mat-icon>
             <!-- <span>Add to Favourite</span> -->
           </button>

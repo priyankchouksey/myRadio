@@ -26,3 +26,11 @@ mat-toolbar {
   border-radius: 50%;
   height: 50px;
 }
+.info-container {
+  color: white;
+  bottom: 0px;
+  padding-left: 10px;
+}
+small {
+  font-size: 10px;
+}

@@ -5,6 +5,7 @@ import { Station } from '../../shared/station';
 import { AuthService } from '../../core/auth.service';
 import { User } from '../../core/core.module';
 import { BehaviorSubject } from 'rxjs';
+import { PlayerService } from '../../shared/player.service';
 
 @Component({
   selector: 'app-stations-page',
@@ -14,7 +15,7 @@ import { BehaviorSubject } from 'rxjs';
 export class StationsPageComponent implements OnInit {
   myStations: Array<Station> = new Array<Station>();
   userInfo: User;
-  constructor(private stationSrvc: StationsService, private authSrvc: AuthService) {
+  constructor(private stationSrvc: StationsService, private authSrvc: AuthService, private playerSrvc: PlayerService) {
     this.userInfo = authSrvc.userInfo;
   }
 
@@ -23,9 +24,13 @@ export class StationsPageComponent implements OnInit {
       console.log(value);
       if (value) {
         this.myStations.unshift(value);
+        if (value.favourite) {
+          this.playerSrvc.addToList(value);
+        }
       }
     });
-    this.stationSrvc.refreshStations(this.userInfo.id);
+    this.stationSrvc.refreshStations();
+
     // const temp = this.myStations.subscribe(data => {
     //   // temp = data);
     //  console.log(data);
@@ -33,11 +38,17 @@ export class StationsPageComponent implements OnInit {
     // });
   }
   play(station) {
-
+    this.playerSrvc.play(station);
   }
-  addToFav(station: Station) {
+  changeFav(station: Station) {
     station.favourite = !station.favourite;
-    this.stationSrvc.updateUserStation(station);
+    this.stationSrvc.updateUserStation(station).then(() => {
+      if (station.favourite) {
+        this.playerSrvc.addToList(station);
+      } else {
+        this.playerSrvc.removeFromList(station);
+      }
+    });
   }
   updateStation(station: Station) {
     this.stationSrvc.update(station);

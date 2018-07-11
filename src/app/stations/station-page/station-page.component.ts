@@ -3,7 +3,6 @@ import { Station } from '../../shared/station';
 import { StationsService } from '../stations.service';
 import { AuthService } from '../../core/auth.service';
 import { User } from '../../core/core.module';
-import { AngularFireStorage } from 'angularfire2/storage';
 import { PicUploaderComponent } from '../../shared/pic-uploader/pic-uploader.component';
 
 @Component({

@@ -18,9 +18,12 @@ export class AuthService {
     //   console.log(_self);
     // });
   }
+  get isLoggedIn(): boolean {
+    return this.authState !== null;
+  }
   get userInfo() {
-    const user: User = this.authState !== null ?
-    new User(this.authState.uid, true, this.authState.displayName, '', '', this.authState.email, this.authState.photoURL) : null;
+    const user: User = this.authState === null || this.authState === undefined ? null :
+    new User(this.authState.uid, true, this.authState.displayName, '', '', this.authState.email, this.authState.photoURL);
     return user;
   }
   login() {

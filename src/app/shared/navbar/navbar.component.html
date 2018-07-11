@@ -8,12 +8,12 @@
     </div> -->
     <!-- <ng-template #showLogin> -->
         <button mat-icon-button [matMenuTriggerFor]="menu">
-          <img style="height: 34px; width: 34px;" src="../../../assets/images/user-icon.png">
+          <img style="height: 34px; width: 34px;" [src]="authUser ? authUser.userIcon : '../../../assets/images/user-icon.png'">
         </button>
         <mat-menu #menu="matMenu" yPosition="above" xPosition="before">
-          <button mat-menu-item *ngIf="!isUserLoggedIn" (click)="signIn()"> Sign In</button>
-          <button mat-menu-item *ngIf="isUserLoggedIn" (click)="createStation()">Create New Station</button>
-          <button mat-menu-item *ngIf="isUserLoggedIn" (click)="signOut()">Sign Out</button>
+          <button mat-menu-item *ngIf="!auth.isLoggedIn" (click)="signIn()"> Sign In</button>
+          <button mat-menu-item *ngIf="auth.isLoggedIn" (click)="createStation()">Create New Station</button>
+          <button mat-menu-item *ngIf="auth.isLoggedIn" (click)="signOut()">Sign Out</button>
         </mat-menu>
     <!-- </ng-template> -->
   </mat-toolbar-row>

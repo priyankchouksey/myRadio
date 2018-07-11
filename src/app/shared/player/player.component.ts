@@ -9,34 +9,42 @@ import { Station } from '../station';
 })
 export class PlayerComponent implements OnInit {
   url = 'http://ice10.securenetsystems.net/HUMFM';
-  audioPlayer = new Audio(this.url);
+  audioPlayer;
   isPlaying: boolean;
-  constructor(private playerSrvc: PlayerService) { }
+  playinInfo;
+  constructor(public playerSrvc: PlayerService) { }
 
   ngOnInit() {
-    this.audioPlayer.onload = function(event) {
-      console.log(event);
-    };
-    this.audioPlayer.load();
+    // this.audioPlayer.onload = function(event) {
+    //   console.log(event);
+    // };
+    // this.audioPlayer.load();
+    this.playinInfo = this.playerSrvc.playStatus;
   }
 
   onPlay() {
-    this.isPlaying = !this.isPlaying;
-    if (this.isPlaying) {
-      this.audioPlayer.play();
-      // nir.getStationInfo(this.url, function(value) {
-      //   console.log(value);
-      // });
+    if (this.playerSrvc.isPlaying) {
+      this.playerSrvc.stop();
     } else {
-      this.audioPlayer.pause();
+      this.playerSrvc.play();
     }
+    // this.isPlaying = !this.isPlaying;
+    // if (this.isPlaying) {
+    //   this.audioPlayer = new Audio(this.url);
+    //   this.audioPlayer.play();
+    //   // nir.getStationInfo(this.url, function(value) {
+    //   //   console.log(value);
+    //   // });
+    // } else {
+    //   this.audioPlayer.pause();
+    // }
   }
 
   onPrevious() {
-
+    this.playerSrvc.playPrevious();
   }
 
   onNext() {
-
+    this.playerSrvc.playNext();
   }
 }
