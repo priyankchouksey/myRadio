@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef, MatDialog } from '@angular/material';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../../core/user';
+import { LoginComponent } from '../login/login.component';
+import { UserService } from '../../core/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,15 +13,26 @@ import { User } from '../../core/user';
 })
 export class NavbarComponent implements OnInit {
   authUser: User;
-  constructor(public auth: AuthService, private router: Router) { }
+  loginDialog: MatDialogRef<LoginComponent>;
+  constructor(private auth: AuthService, private usrSrvc: UserService, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
+    if (!(this.usrSrvc.currentUser && this.usrSrvc.currentUser.loggedIn)) {
+      this.usrSrvc.getCurrentUser().then(user => {
+
+      }).catch();
+    }
   }
-  signIn() {
-    this.auth.login().then(() => {
-      this.authUser = this.auth.userInfo;
-      this.router.navigate(['myStations']);
-    });
+
+  iconClick() {
+    if (this.usrSrvc.currentUser && this.usrSrvc.currentUser.loggedIn) {
+      // show nav
+      this.auth.logout().then(() => {
+        console.log('logged out.');
+      });
+    } else {
+      this.loginDialog = this.dialog.open(LoginComponent);
+    }
   }
   signOut() {
     this.auth.logout().then(() => {

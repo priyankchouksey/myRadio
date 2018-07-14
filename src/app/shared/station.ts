@@ -46,8 +46,10 @@ export class GeoLocation {
 export class PlayingInfo {
   title: string;
   nowPlaying: string;
-  constructor(title: string, nowPlaying: string) {
+  image: string;
+  constructor(title: string, nowPlaying: string, image: string) {
     this.title = title;
     this.nowPlaying = nowPlaying;
+    this.image = image;
   }
 }

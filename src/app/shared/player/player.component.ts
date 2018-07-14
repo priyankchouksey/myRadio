@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { PlayerService } from '../player.service';
 import { Station } from '../station';
 
@@ -8,18 +8,40 @@ import { Station } from '../station';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-  url = 'http://ice10.securenetsystems.net/HUMFM';
-  audioPlayer;
   isPlaying: boolean;
+  showDraw: boolean;
   playinInfo;
-  constructor(public playerSrvc: PlayerService) { }
+  currentStation: Station;
+  @HostListener('document:click', ['$event', '$event.target'])
+  onClick(event: MouseEvent, targetElement: HTMLElement): void {
+      if (!targetElement) {
+          return;
+      }
+      const clickedInside = this.elRef.nativeElement.contains(targetElement);
+      if (!clickedInside) {
+          this.showDraw = false;
+      }
+  }
+  constructor(public playerSrvc: PlayerService, private elRef: ElementRef) { }
 
   ngOnInit() {
     // this.audioPlayer.onload = function(event) {
     //   console.log(event);
     // };
     // this.audioPlayer.load();
-    this.playinInfo = this.playerSrvc.playStatus;
+    this.playerSrvc.playStatus.subscribe(res => {
+      switch (res.changeType) {
+        case 'playstatus':
+          this.currentStation = this.playerSrvc.playList[this.playerSrvc.currentIndex];
+          break;
+        case 'streamdata':
+          this.playinInfo = res.data;
+          break;
+        case 'listupdate':
+          this.currentStation = this.playerSrvc.playList[this.playerSrvc.currentIndex];
+        break;
+      }
+    });
   }
 
   onPlay() {
@@ -28,16 +50,7 @@ export class PlayerComponent implements OnInit {
     } else {
       this.playerSrvc.play();
     }
-    // this.isPlaying = !this.isPlaying;
-    // if (this.isPlaying) {
-    //   this.audioPlayer = new Audio(this.url);
-    //   this.audioPlayer.play();
-    //   // nir.getStationInfo(this.url, function(value) {
-    //   //   console.log(value);
-    //   // });
-    // } else {
-    //   this.audioPlayer.pause();
-    // }
+
   }
 
   onPrevious() {

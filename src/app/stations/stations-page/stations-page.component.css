@@ -50,3 +50,8 @@ mat-divider {
   border-top-color: wheat;
   margin-top: 3px;
 }
+@media (max-width: 768px) { /*breakpoint*/
+  mat-card {
+    max-width: 100%;;
+  }
+}

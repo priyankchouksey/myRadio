@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>{{isLoginMode ? 'Login' : 'Register'}}</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="loginForm">
+    <input type="email" formControlName="email" class="form-control formelements" placeholder="Email address" autofocus>
+    <input type="password" placeholder="Password" class="form-control formelements" formControlName="password">
+    <label class="error">{{errorMessage}}</label>
+    <button type="submit" (click)="tryLogin(loginForm.value)" class="btn btn-default formelements">{{isLoginMode ? 'Login' : 'Register'}}</button>
+  </form>
+  <div class="formelements strike">
+    <span >
+      Or
+    </span>
+  </div>
+  <button type="button" class="btn btn-primary btn-block formelements" (click)="tryFacebookLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Facebook</button>
+  <button type="button" class="btn btn-danger btn-block formelements" (click)="tryGoogleLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Google</button>
+  <button type="button" class="btn btn-info btn-block formelements" (click)="tryTwitterLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Twitter</button>
+  <div class="formelements">
+    <p>{{isLoginMode ? 'Don&quot;t hane an account?' : 'Already have an account?'}} <a (click)="isLoginMode = !isLoginMode;">{{isLoginMode ? 'Register' : 'Login'}}.</a></p>
+  </div>
+
+</mat-dialog-content>
+<button mat-icon-button class="close" mat-dialog-close>
+  <mat-icon>cancel</mat-icon>
+</button>

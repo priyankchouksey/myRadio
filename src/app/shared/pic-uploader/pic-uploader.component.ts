@@ -5,6 +5,7 @@ import { User } from '../../core/core.module';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { Promise } from 'q';
+import { UserService } from '../../core/user.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class PicUploaderComponent implements OnInit {
   get imageSource() {
     return this.imgSrc;
   }
-  constructor(private auth: AuthService, private storage: AngularFireStorage) {
+  constructor(private auth: UserService, private storage: AngularFireStorage) {
 
    }
 
@@ -70,21 +71,22 @@ export class PicUploaderComponent implements OnInit {
   saveImage(filename: string) {
     return Promise((res, rej) => {
       try {
-        const id = this.auth.userInfo.id;
-        const path = id + '/' + filename + '.logo';
-        const fileRef = this.storage.ref(path);
-        const task = this.storage.upload(path, this.file);
-        this.uploadPercent = task.percentageChanges();
-        task.snapshotChanges().pipe(
-          finalize(() => {
-            this.downloadURL = fileRef.getDownloadURL();
-            this.downloadURL.subscribe(image => {
-              res(image);
-              // this.imageSource = image;
-              });
-          })
-        )
-        .subscribe();
+        this.auth.getCurrentUser().then(user => {
+          const path = user.id + '/' + filename + '.logo';
+          const fileRef = this.storage.ref(path);
+          const task = this.storage.upload(path, this.file);
+          this.uploadPercent = task.percentageChanges();
+          task.snapshotChanges().pipe(
+            finalize(() => {
+              this.downloadURL = fileRef.getDownloadURL();
+              this.downloadURL.subscribe(image => {
+                res(image);
+                // this.imageSource = image;
+                });
+            })
+          )
+          .subscribe();
+        });
       } catch (error) {
         rej('Error Uploading file...');
       }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
+import * as firebase from 'firebase';
 
-import { User } from './user';
+import { User, Provider } from './user';
 
 @Injectable()
 export class AuthService {
@@ -14,19 +14,11 @@ export class AuthService {
     this.afAuth.authState.subscribe(data => {
       this.authState = data;
       });
-    //   _self.user = new User(data.uid, true, data.displayName, '', '', data.email, data.photoURL);
-    //   console.log(_self);
-    // });
   }
   get isLoggedIn(): boolean {
     return this.authState !== null;
   }
-  get userInfo() {
-    const user: User = this.authState === null || this.authState === undefined ? null :
-    new User(this.authState.uid, true, this.authState.displayName, '', '', this.authState.email, this.authState.photoURL);
-    return user;
-  }
-  login() {
+  login(provider?: Provider, data?: any) {
     return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
   }
   logout() {

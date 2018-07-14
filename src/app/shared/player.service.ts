@@ -1,16 +1,16 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, Output } from '@angular/core';
 import { Station, PlayingInfo } from './station';
 import { Subject } from 'rxjs';
+import { EventEmitter } from '../../../node_modules/protractor';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService implements OnDestroy {
-
-  playStatus: Subject<PlayingInfo> = new Subject<PlayingInfo>();
+  playStatus: Subject<any> = new Subject<any>();
   playList: Array<Station> = new Array<Station>();
   private audioPlayer = new Audio();
-  private currentIndex: number;
+  currentIndex: number;
   private isplaying = false;
 
   constructor() { }
@@ -19,16 +19,25 @@ export class PlayerService implements OnDestroy {
   }
   play(station?: Station) {
     if (this.isplaying) { this.stop(); }
-    if (station) { this.addToList(station); }
-    this.playList[this.currentIndex].playing = true;
-    this.isplaying = true;
-    this.informSubject('Playing...');
+    if (station) { this.addToList(station); } else { station = this.playList[this.currentIndex]; }
+
+    this.audioPlayer.src = station.playurl;
+    this.audioPlayer.play().then(data => {
+      this.playList[this.currentIndex].playing = true;
+      this.isplaying = true;
+      this.informSubject('playstatus', 'Playing...');
+      this.informSubject('streamdata', 'Now Playing...');
+    }).catch(err => {
+      this.informSubject('playstatus', 'Error playing...');
+      this.informSubject('streamdata', 'Error Playing...');
+    });
   }
   stop() {
     this.isplaying = false;
     this.audioPlayer.src = '';
     this.playList[this.currentIndex].playing = false;
-    this.informSubject('Stopped...');
+    this.informSubject('playstatus', 'Stopped...');
+    this.informSubject('streamdata', 'Stopped Playing...');
     // this.checkandRemoveNonFav();
   }
   playNext() {
@@ -42,6 +51,10 @@ export class PlayerService implements OnDestroy {
     if (wasPlaying) { this.stop(); }
     this.currentIndex--;
     if (wasPlaying) { this.play(); }
+  }
+  playSelected(index: number) {
+    this.currentIndex = index;
+    this.play();
   }
   get isPlaying(): boolean {
     return this.isplaying;
@@ -61,6 +74,7 @@ export class PlayerService implements OnDestroy {
     if (this.playList.length > 0) {
       this.currentIndex = 0;
     }
+    this.informSubject('listupdate', '');
     return found;
   }
   removeFromList(station: Station) {
@@ -70,17 +84,19 @@ export class PlayerService implements OnDestroy {
       if (this.currentIndex > this.playList.length + 1) {
         this.currentIndex = this.playList.length > 0 ? 0 : undefined;
       }
+      this.informSubject('listupdate', '');
     }
   }
   statusChange() {
     return this.playStatus;
   }
-  private informSubject(status: string) {
-    this.playStatus.next(new PlayingInfo(this.playList[this.currentIndex].name, status));
+  private informSubject(type: string, status: string) {
+    this.playStatus.next({'changeType': type, 'data': status});
   }
   private checkandRemoveNonFav() {
     if (!this.playList[this.currentIndex].favourite) {
       this.playList.splice(this.currentIndex, 1);
     }
   }
+
 }

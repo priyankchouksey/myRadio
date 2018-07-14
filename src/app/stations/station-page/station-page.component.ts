@@ -4,6 +4,7 @@ import { StationsService } from '../stations.service';
 import { AuthService } from '../../core/auth.service';
 import { User } from '../../core/core.module';
 import { PicUploaderComponent } from '../../shared/pic-uploader/pic-uploader.component';
+import { UserService } from '../../core/user.service';
 
 @Component({
   selector: 'app-station-page',
@@ -13,8 +14,10 @@ import { PicUploaderComponent } from '../../shared/pic-uploader/pic-uploader.com
 export class StationPageComponent implements OnInit {
   station: Station = new Station();
   user: User;
-  constructor(private stationSrvc: StationsService, private auth: AuthService) {
-    this.user = this.auth.userInfo;
+  constructor(private stationSrvc: StationsService, private auth: UserService) {
+    this.auth.getCurrentUser().then(user => {
+      this.user = user;
+    });
   }
 
   ngOnInit() {

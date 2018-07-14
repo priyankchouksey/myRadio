@@ -1,4 +1,4 @@
-<app-section-header>my Favourites</app-section-header>
+<!-- <app-section-header>my Favourites</app-section-header>
 <section fxLayout="row" fxLayout.xs="column">
   <mat-card *ngFor="let station of (myStations | favStations)">
     <mat-card-content routerLink="{{station.id}}" >
@@ -17,7 +17,6 @@
         <span class="spacer"></span>
         <button mat-icon-button (click)="changeFav(station)">
             <mat-icon>{{station.favourite ? 'favorite' : 'favorite_border'}}</mat-icon>
-            <!-- <span>Add to Favourite</span> -->
           </button>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
@@ -49,9 +48,9 @@
       </mat-card-actions>
     </div>
   </mat-card>
-</section>
+</section> -->
 <br>
-<app-section-header>all Stations</app-section-header>
+<!-- <app-section-header>all Stations</app-section-header> -->
 <section fxLayout="row" fxLayout.xs="column">
   <mat-card *ngFor="let station of (myStations)">
     <mat-card-content routerLink="{{station.id}}" >

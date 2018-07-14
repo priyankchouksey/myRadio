@@ -9,6 +9,7 @@ import { User } from '../core/core.module';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { UserService } from '../core/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +21,12 @@ export class StationsService {
   userStationCollection: AngularFirestoreCollection<UserStation>;
   user: User;
 
-  constructor(private ngFs: AngularFirestore, private storage: AngularFireStorage, private auth: AuthService) {
+  constructor(private ngFs: AngularFirestore, private storage: AngularFireStorage, usrSrvc: UserService) {
     this.stationCollection = this.ngFs.collection('stations', ref => ref.orderBy('createdate', 'desc'));
     this.userStationCollection = this.ngFs.collection('userstations', ref => ref.orderBy('createdate', 'desc'));
-    this.user = this.auth.userInfo;
+    usrSrvc.getCurrentUser().then(user => {
+      this.user =  user;
+    });
    }
    getStations() {
      return this.myStations;

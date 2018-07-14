@@ -1,10 +1,10 @@
 <app-navbar></app-navbar>
 <div class="appcontainer">
+  <router-outlet></router-outlet>
   <div *ngIf="auth.isLoggedIn">
-    <router-outlet></router-outlet>
     <app-player></app-player>
   </div>
-  <div *ngIf="!auth.isLoggedIn">
+  <!-- <div *ngIf="!auth.isLoggedIn">
     <app-home></app-home>
-  </div>
+  </div> -->
 </div>

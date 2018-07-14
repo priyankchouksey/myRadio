@@ -6,11 +6,13 @@ import { StationsService } from './stations.service';
 import { StationPageComponent } from './station-page/station-page.component';
 import { FavStationsPipe } from './fav-stations.pipe';
 import { AuthService } from '../core/auth.service';
+import { AuthGuardService } from '../core/auth-guard.service';
+import { StationResolver } from './station.resolver';
 
 const routes: Routes = [
-  { path: 'station', component: StationPageComponent},
-  { path: 'station:id', component: StationPageComponent},
-  { path: 'myStations', component: StationsPageComponent}
+  { path: 'station', component: StationPageComponent, resolve: {data: StationResolver}},
+  { path: 'station:id', component: StationPageComponent, resolve: {data: StationResolver}},
+  { path: 'myStations', component: StationsPageComponent, resolve: {data: StationResolver}}
 ];
 @NgModule({
   imports: [
@@ -18,6 +20,6 @@ const routes: Routes = [
   ],
   exports: [StationPageComponent, StationsPageComponent],
   declarations: [StationsPageComponent, StationPageComponent, FavStationsPipe],
-  providers: [StationsService]
+  providers: [StationsService, StationResolver]
 })
 export class StationsModule { }

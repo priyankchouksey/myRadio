@@ -6,6 +6,7 @@ import { AuthService } from '../../core/auth.service';
 import { User } from '../../core/core.module';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerService } from '../../shared/player.service';
+import { UserService } from '../../core/user.service';
 
 @Component({
   selector: 'app-stations-page',
@@ -15,8 +16,10 @@ import { PlayerService } from '../../shared/player.service';
 export class StationsPageComponent implements OnInit {
   myStations: Array<Station> = new Array<Station>();
   userInfo: User;
-  constructor(private stationSrvc: StationsService, private authSrvc: AuthService, private playerSrvc: PlayerService) {
-    this.userInfo = authSrvc.userInfo;
+  constructor(private stationSrvc: StationsService, userService: UserService, private playerSrvc: PlayerService) {
+    userService.getCurrentUser().then(user => {
+      this.userInfo = user;
+    });
   }
 
   ngOnInit() {
@@ -37,8 +40,12 @@ export class StationsPageComponent implements OnInit {
 
     // });
   }
-  play(station) {
-    this.playerSrvc.play(station);
+  play(station: Station) {
+    if (station.playing) {
+      this.playerSrvc.stop();
+    } else {
+      this.playerSrvc.play(station);
+    }
   }
   changeFav(station: Station) {
     station.favourite = !station.favourite;
