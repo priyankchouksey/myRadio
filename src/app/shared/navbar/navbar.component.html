@@ -8,7 +8,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 <!-- <app-drawer-menu [(show)]="showDraw" (optionClicked)="onOptionClick($event)"></app-drawer-menu> -->
-<div #drawer class="drawer" [hidden]="!showDraw">
+<div #drawer class="drawer" [hidden]="!showDraw" *ngIf="usrSrvc.currentUser" >
   <div class="draw-header">
     <div class="area">
       <img mat-list-avatar class="draw-header-img" src="{{usrSrvc.currentUser.userIcon}}" >

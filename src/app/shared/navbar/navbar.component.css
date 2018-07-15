@@ -19,7 +19,7 @@ mat-toolbar{
   overflow: scroll;
   border: 1px solid gray;
   width: 260px;
-  right: 0px;
+  right: 20px;
   height: calc(80% - 140px);
   top: 70px;
   z-index: 999;
@@ -31,7 +31,7 @@ mat-toolbar{
   height: 60px;
   text-align: center;
   padding: 5px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid lightgray;
 }
 .draw-header-img {
   height: 50px;
@@ -45,10 +45,10 @@ mat-list {
   position: absolute;
   width: 100%;
   bottom: 0px;
-  height: 60px;
+  height: 55px;
   text-align: right;
   padding: 10px;
-  border-top: 1px solid gray;
+  border-top: 1px solid lightgray;
 }
 .area{
   /* margin:5px; */

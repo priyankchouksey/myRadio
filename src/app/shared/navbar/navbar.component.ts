@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
   @HostListener('document:click', ['$event', '$event.target'])
   onClick(event: MouseEvent, targetElement: HTMLElement): void {
     if (this.showingMe) { return; }
-      if (!targetElement) {
+      if (!targetElement || !this.elRef) {
           return;
       }
       const clickedInside = this.elRef.nativeElement.contains(targetElement);
@@ -47,6 +47,7 @@ export class NavbarComponent implements OnInit {
   }
   signOut() {
     this.auth.logout().then(() => {
+      this.usrSrvc.currentUser = null;
       this.router.navigate(['home']);
     });
   }
@@ -56,7 +57,7 @@ export class NavbarComponent implements OnInit {
   onOptionClick(type: string) {
     switch (type) {
       case 'createstation':
-
+        this.router.navigate(['station']);
         break;
       case 'sharestation':
 
@@ -68,6 +69,7 @@ export class NavbarComponent implements OnInit {
         this.signOut();
         break;
     }
+    this.showDraw = false;
   }
   private toggleDrawer () {
     this.showDraw = !this.showDraw;
