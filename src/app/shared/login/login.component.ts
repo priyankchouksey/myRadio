@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
       width = '60%';
     }
     this.dialogRef.updateSize(width);
+    this.isLoginMode = true;
   }
   createForm() {
     this.loginForm = this.fb.group({

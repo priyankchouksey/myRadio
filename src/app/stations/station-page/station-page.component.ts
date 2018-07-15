@@ -13,11 +13,11 @@ import { UserService } from '../../core/user.service';
 })
 export class StationPageComponent implements OnInit {
   station: Station = new Station();
-  user: User;
-  constructor(private stationSrvc: StationsService, private auth: UserService) {
-    this.auth.getCurrentUser().then(user => {
-      this.user = user;
-    });
+  // user: User;
+  constructor(private stationSrvc: StationsService, private usrSrvc: UserService) {
+    // this.auth.getCurrentUser().then(user => {
+    //   this.user = user;
+    // });
   }
 
   ngOnInit() {
@@ -31,7 +31,7 @@ export class StationPageComponent implements OnInit {
       picUploader.saveImage(this.stationSrvc.getNewID()).then(value => {
         this.station.logo = String(value);
         this.station.createdate = new Date(Date.now());
-        this.station.createdby = this.user.id;
+        this.station.createdby = this.usrSrvc.currentUser.id;
         this.stationSrvc.create(this.station);
       });
     }

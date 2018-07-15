@@ -12,6 +12,7 @@ import { SectionHeaderComponent } from './section-header/section-header.componen
 import { AuthGuardService } from '../core/auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { DrawerMenuComponent } from './drawer-menu/drawer-menu.component';
 // import { Station } from './station';
 
 export { Station } from './station';
@@ -42,7 +43,7 @@ const routes: Routes = [
     ReactiveFormsModule
   ],
   declarations: [NavbarComponent, PicUploaderComponent, HomeComponent,
-    PlayerComponent, SectionHeaderComponent, LoginComponent, RegisterComponent],
+    PlayerComponent, SectionHeaderComponent, LoginComponent, RegisterComponent, DrawerMenuComponent],
     entryComponents: [LoginComponent]
 })
 export class SharedModule { }

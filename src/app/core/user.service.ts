@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
-import { User } from './user';
+import { User, Provider } from './user';
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,23 @@ export class UserService {
       });
     });
   }
-
+  getProviderName() {
+    let retVal: string;
+    switch (this.currentUser.provider) {
+      case Provider.GOOGLE:
+        retVal = 'Google';
+        break;
+      case Provider.FACEBOOK:
+        retVal = 'Facebook';
+        break;
+      case Provider.TWITTER:
+        retVal = 'Twitter';
+        break;
+      case Provider.EMAIL:
+        retVal = 'email';
+        break;
+    }
+    return retVal;
+  }
   constructor() { }
 }

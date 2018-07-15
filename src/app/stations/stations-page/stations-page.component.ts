@@ -15,11 +15,9 @@ import { UserService } from '../../core/user.service';
 })
 export class StationsPageComponent implements OnInit {
   myStations: Array<Station> = new Array<Station>();
-  userInfo: User;
+
   constructor(private stationSrvc: StationsService, userService: UserService, private playerSrvc: PlayerService) {
-    userService.getCurrentUser().then(user => {
-      this.userInfo = user;
-    });
+
   }
 
   ngOnInit() {

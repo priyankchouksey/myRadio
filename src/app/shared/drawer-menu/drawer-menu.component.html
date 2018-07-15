@@ -1,13 +1,3 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>myRadio</span>
-    <span class="spacer"></span>
-    <button mat-icon-button (click)="iconClick()">
-      <img style="height: 34px; width: 34px; border-radius: 50%" [src]="usrSrvc.currentUser ? usrSrvc.currentUser.userIcon : '../../../assets/images/user-icon.png'">
-    </button>
-  </mat-toolbar-row>
-</mat-toolbar>
-<!-- <app-drawer-menu [(show)]="showDraw" (optionClicked)="onOptionClick($event)"></app-drawer-menu> -->
 <div #drawer class="drawer" [hidden]="!showDraw">
   <div class="draw-header">
     <div class="area">

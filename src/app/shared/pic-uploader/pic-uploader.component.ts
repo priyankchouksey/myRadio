@@ -31,7 +31,7 @@ export class PicUploaderComponent implements OnInit {
   get imageSource() {
     return this.imgSrc;
   }
-  constructor(private auth: UserService, private storage: AngularFireStorage) {
+  constructor(private usrSrvc: UserService, private storage: AngularFireStorage) {
 
    }
 
@@ -71,8 +71,8 @@ export class PicUploaderComponent implements OnInit {
   saveImage(filename: string) {
     return Promise((res, rej) => {
       try {
-        this.auth.getCurrentUser().then(user => {
-          const path = user.id + '/' + filename + '.logo';
+        // this.usrSrvc.getCurrentUser().then(user => {
+          const path = this.usrSrvc.currentUser.id + '/' + filename + '.logo';
           const fileRef = this.storage.ref(path);
           const task = this.storage.upload(path, this.file);
           this.uploadPercent = task.percentageChanges();
@@ -86,7 +86,7 @@ export class PicUploaderComponent implements OnInit {
             })
           )
           .subscribe();
-        });
+        // });
       } catch (error) {
         rej('Error Uploading file...');
       }

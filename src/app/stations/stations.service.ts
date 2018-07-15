@@ -19,14 +19,14 @@ export class StationsService {
 
   stationCollection: AngularFirestoreCollection<Station>;
   userStationCollection: AngularFirestoreCollection<UserStation>;
-  user: User;
+  // user: User;
 
-  constructor(private ngFs: AngularFirestore, private storage: AngularFireStorage, usrSrvc: UserService) {
+  constructor(private ngFs: AngularFirestore, private storage: AngularFireStorage, private usrSrvc: UserService) {
     this.stationCollection = this.ngFs.collection('stations', ref => ref.orderBy('createdate', 'desc'));
     this.userStationCollection = this.ngFs.collection('userstations', ref => ref.orderBy('createdate', 'desc'));
-    usrSrvc.getCurrentUser().then(user => {
-      this.user =  user;
-    });
+    // usrSrvc.getCurrentUser().then(user => {
+    //   this.user =  user;
+    // });
    }
    getStations() {
      return this.myStations;
@@ -34,7 +34,8 @@ export class StationsService {
    refreshStations(userID?: string) {
     this.ngFs.collection('userstations', queryRef => {
       let query: any = queryRef;
-      query = query.where('userid', '==', this.user.id);
+      // query = query.where('userid', '==', this.user.id);
+      query = query.where('userid', '==', this.usrSrvc.currentUser.id);
       return query;
     }).ref.get().then(res => {
       res.forEach(doc => {
