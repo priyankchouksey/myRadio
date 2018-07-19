@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, Output } from '@angular/core';
 import { Station, PlayingInfo } from './station';
 import { Subject } from 'rxjs';
-import { EventEmitter } from '../../../node_modules/protractor';
+import { EventEmitter } from 'protractor';
 
 @Injectable({
   providedIn: 'root'

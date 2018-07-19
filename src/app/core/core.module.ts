@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from './auth.service';
 import { AuthGuardService } from './auth-guard.service';
 import { UserService } from './user.service';
+import { EventsService } from './events.service';
 export { User } from './user';
 
 @NgModule({
@@ -10,6 +11,6 @@ export { User } from './user';
     CommonModule
   ],
   declarations: [],
-  providers: [AuthService, AuthGuardService, UserService]
+  providers: [AuthService, AuthGuardService, UserService, EventsService]
 })
 export class CoreModule { }

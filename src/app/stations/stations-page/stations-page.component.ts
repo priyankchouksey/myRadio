@@ -7,6 +7,9 @@ import { User } from '../../core/core.module';
 import { BehaviorSubject } from 'rxjs';
 import { PlayerService } from '../../shared/player.service';
 import { UserService } from '../../core/user.service';
+import { MatDialog } from '@angular/material';
+import { StationComponent } from '../station/station.component';
+import { EventsService } from '../../core/events.service';
 
 @Component({
   selector: 'app-stations-page',
@@ -16,11 +19,18 @@ import { UserService } from '../../core/user.service';
 export class StationsPageComponent implements OnInit {
   myStations: Array<Station> = new Array<Station>();
 
-  constructor(private stationSrvc: StationsService, userService: UserService, private playerSrvc: PlayerService) {
+  constructor(private stationSrvc: StationsService,
+    userService: UserService,
+    private playerSrvc: PlayerService,
+    private dialog: MatDialog,
+    private evtSrvc: EventsService) {
 
   }
 
   ngOnInit() {
+    this.evtSrvc.subscribe('CREATE_STATION').subscribe(value => {
+      this.modifyStation(new Station());
+    });
     this.stationSrvc.getStations().subscribe((value) => {
       console.log(value);
       if (value) {
@@ -57,5 +67,11 @@ export class StationsPageComponent implements OnInit {
   }
   updateStation(station: Station) {
     this.stationSrvc.update(station);
+  }
+  modifyStation(station: Station) {
+    this.dialog.open(StationComponent, {
+      disableClose: true,
+      data: station
+    });
   }
 }

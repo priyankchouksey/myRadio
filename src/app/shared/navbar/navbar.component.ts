@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User, Provider } from '../../core/user';
 import { LoginComponent } from '../login/login.component';
 import { UserService } from '../../core/user.service';
+import { EventsService } from '../../core/events.service';
 
 @Component({
   selector: 'app-navbar',
@@ -28,7 +29,11 @@ export class NavbarComponent implements OnInit {
           this.showDraw = false;
       }
   }
-  constructor(private auth: AuthService, public usrSrvc: UserService, private router: Router, private dialog: MatDialog) { }
+  constructor(private auth: AuthService,
+    public usrSrvc: UserService,
+    private router: Router,
+    private dialog: MatDialog,
+    private evtSrvc: EventsService) { }
 
   ngOnInit() {
     if (!(this.usrSrvc.currentUser && this.usrSrvc.currentUser.loggedIn)) {
@@ -57,7 +62,7 @@ export class NavbarComponent implements OnInit {
   onOptionClick(type: string) {
     switch (type) {
       case 'createstation':
-        this.router.navigate(['station']);
+        this.evtSrvc.publish('CREATE_STATION', null);
         break;
       case 'sharestation':
 
