@@ -8,19 +8,21 @@ import { FavStationsPipe } from './fav-stations.pipe';
 import { AuthService } from '../core/auth.service';
 import { AuthGuardService } from '../core/auth-guard.service';
 import { StationResolver } from './station.resolver';
+import { ShareStationComponent } from './share-station/share-station.component';
+import { ShareStationService } from './share-station.service';
+import { ImportShareComponent } from './import-share/import-share.component';
 
 const routes: Routes = [
-  { path: 'station', component: StationComponent, resolve: {data: StationResolver}},
-  { path: 'station:id', component: StationComponent, resolve: {data: StationResolver}},
-  { path: 'myStations', component: StationsPageComponent, resolve: {data: StationResolver}}
+  { path: 'myStations', component: StationsPageComponent, resolve: {data: StationResolver}},
+  { path: 'shared/:id', component: ImportShareComponent }
 ];
 @NgModule({
   imports: [
     SharedModule, RouterModule.forChild(routes)
   ],
   exports: [StationComponent, StationsPageComponent],
-  declarations: [StationsPageComponent, StationComponent, FavStationsPipe],
-  providers: [StationsService, StationResolver],
-  entryComponents: [StationComponent]
+  declarations: [StationsPageComponent, StationComponent, FavStationsPipe, ShareStationComponent, ImportShareComponent],
+  providers: [StationsService, StationResolver, ShareStationService],
+  entryComponents: [StationComponent, ShareStationComponent]
 })
 export class StationsModule { }

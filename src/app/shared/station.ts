@@ -13,6 +13,7 @@ export class Station {
   playing: boolean;
   geo = new GeoLocation();
   userstatioid: string;
+  addedtoshare: boolean;
   constructor (rawData?: any) {
     if (rawData) {
       this.id = rawData.id;

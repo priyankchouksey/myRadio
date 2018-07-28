@@ -1,0 +1,33 @@
+.container {
+  /* height: 80%; */
+  width: 80%;
+  padding: 0 0 5px 0;
+  margin: 10% auto auto auto;
+  box-shadow: 2px 5px 18px #888888;
+  max-height: 80%
+}
+.header {
+  height: 60px;
+  text-align: center;
+  padding: 2% 0;
+  border-bottom: 1px solid rgba(0,0,0,.14);
+}
+.header h2 {
+  color: darkgray
+}
+mat-list{
+  border-bottom: 1px solid rgba(0,0,0,.14);
+  max-height: 70%;
+  padding-top: 0px;
+}
+.import-btn {
+  margin: 10px 15px 5px auto;
+  float: right;
+}
+.odd {
+  background-color: #f2f9ff;
+
+}
+.even {
+  background-color: #eceff3;
+}

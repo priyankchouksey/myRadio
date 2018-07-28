@@ -1,0 +1,16 @@
+<div *ngIf="!usrSrvc.currentUser?.loggedIn">
+  Please Login...
+</div>
+<div *ngIf="usrSrvc.currentUser?.loggedIn" class="container">
+  <div class="header"><h2>{{shareData?.name}}</h2></div>
+  <mat-list #selectList *ngIf="shareData.stations && shareData.stations.length > 0">
+    <mat-list-item *ngFor="let item of shareData.stations; let lastitem = last; let idx = index; let isOdd=odd; let isEven=even" [class.odd]="isOdd" [class.even]="isEven" >
+        <img mat-list-avatar [src] = "item.logo">
+        <span mat-line>{{item.name}}</span>
+        <p mat-line> {{item.frequency}} &bull; {{item.geo.city}}, {{item.geo.state}} </p>
+        <mat-checkbox align="end" [(ngModel)]="item.selected"></mat-checkbox>
+    </mat-list-item>
+  </mat-list>
+  <button mat-raised-button class="import-btn" (click)="import()">cancel</button>
+  <button mat-raised-button color="accent" class="import-btn" (click)="import()">Add to my List</button>
+</div>

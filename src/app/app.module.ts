@@ -18,7 +18,8 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '', loadChildren: './shared/shared.module#SharedModule'},
-  { path: '', loadChildren: './stations/stations.module#StationsModule'}
+  { path: '', loadChildren: './stations/stations.module#StationsModule'},
+
 ];
 @NgModule({
   declarations: [AppComponent],

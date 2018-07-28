@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+.area{
+  margin:5px;
+  /* text-align: center; */
+  display:block;
+  float: left;
+}
+
+.content {
+  display:table-cell;
+  vertical-align:middle;
+  /* border-radius: 50%; */
+  height: 55px;
+}
+.info-container {
+  bottom: 0px;
+  padding-left: 10px;
+}
+mat-selection-list {
+  height: 160px;
+}
+mat-selection-list:focus {
+  outline: none;
+}
+.odd {
+  background-color: #f2f9ff;
+
+}
+.even {
+  background-color: #eceff3;
+}
+
+.save-container {
+  padding: 5px 0px;
+  width: 100%;
+  text-align: right;
+}
+.share-btn-container {
+  padding: 5px 0px;
+  width: 100%;
+}
+.share-btn {
+  width: 50%;
+}
+.share-input {
+  width: calc(100% + 3px);
+  margin: 0px -2px;
+  padding: 0px;
+}

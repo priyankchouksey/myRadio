@@ -10,6 +10,8 @@ import { UserService } from '../../core/user.service';
 import { MatDialog } from '@angular/material';
 import { StationComponent } from '../station/station.component';
 import { EventsService } from '../../core/events.service';
+import { ShareStationService } from '../share-station.service';
+import { ShareStationComponent } from '../share-station/share-station.component';
 
 @Component({
   selector: 'app-stations-page',
@@ -20,11 +22,11 @@ export class StationsPageComponent implements OnInit {
   myStations: Array<Station> = new Array<Station>();
 
   constructor(private stationSrvc: StationsService,
-    userService: UserService,
+    public userService: UserService,
     private playerSrvc: PlayerService,
     private dialog: MatDialog,
-    private evtSrvc: EventsService) {
-
+    private evtSrvc: EventsService,
+    private shrStnSrvc: ShareStationService) {
   }
 
   ngOnInit() {
@@ -72,6 +74,28 @@ export class StationsPageComponent implements OnInit {
     this.dialog.open(StationComponent, {
       disableClose: true,
       data: station
+    });
+  }
+  deleteStation(station: Station) {
+    this.stationSrvc.delete(station.id);
+  }
+  shareStation(station: Station) {
+    // this.shrStnSrvc.add(station);
+    this.dialog.open(ShareStationComponent, {
+      disableClose: true,
+      data: [station]
+    });
+  }
+  toggleAddtoShare(station: Station) {
+    if (station.addedtoshare) {
+      this.shrStnSrvc.remove(station);
+    } else {
+      this.shrStnSrvc.add(station);
+    }
+  }
+  shareAll() {
+    this.dialog.open(ShareStationComponent, {
+      disableClose: true
     });
   }
 }

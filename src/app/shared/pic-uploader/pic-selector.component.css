@@ -1,0 +1,59 @@
+.selector-container {
+  width: 100%;
+  height: auto;
+}
+.image-url {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image-upload {
+  position: relative;
+  border-radius: 5px;
+  border: #d0d0d0 dotted 2px;
+  font-family: sans-serif;
+  width: 100%;
+  height: 166.56px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}
+.fileover {
+  border: #30bf5a solid 2px;
+}
+mat-form-field {
+  margin-top: 5px;
+  width: 100%;
+}
+.preview-container {
+  height: 100px;
+  width: 100px;
+  /* border: 1px solid; */
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.imagepreview {
+  height: 100%;
+  width: 100%;
+}
+.draglabel {
+  color: gray;
+  margin-left: 15px;
+}
+#selectImage {
+  display: none;
+}
+.draglistner {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  cursor: pointer;
+}
+mat-dialog-actions {
+  float: right;
+}

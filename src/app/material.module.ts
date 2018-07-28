@@ -11,6 +11,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [MatButtonModule,
@@ -24,7 +27,10 @@ import { MatSidenavModule } from '@angular/material';
     MatGridListModule,
     MatListModule,
     MatDialogModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatSnackBarModule
   ],
   exports: [MatButtonModule,
     MatToolbarModule,
@@ -37,7 +43,10 @@ import { MatSidenavModule } from '@angular/material';
     MatGridListModule,
     MatListModule,
     MatDialogModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCheckboxModule,
+    MatTabsModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {}

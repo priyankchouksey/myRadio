@@ -2,19 +2,30 @@
 
 <mat-dialog-content>
   <form [formGroup]="loginForm">
-    <input type="email" formControlName="email" class="form-control formelements" placeholder="Email address" autofocus>
-    <input type="password" placeholder="Password" class="form-control formelements" formControlName="password">
-    <label class="error">{{errorMessage}}</label>
-    <button type="submit" (click)="tryLogin(loginForm.value)" class="btn btn-default formelements">{{isLoginMode ? 'Login' : 'Register'}}</button>
+    <mat-form-field>
+      <input matInput type="email" #email formControlName="email" placeholder="Email address" autofocus required (input)="valueChanged($event)">
+    <!-- <input matInput type="email" #email formControlName="email" class="form-control formelements" placeholder="Email address" autofocus required (input)="valueChanged($event)"> -->
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput type="password" placeholder="Password" formControlName="password" required minlength="8">
+      <mat-hint *ngIf="wrongpwdCount > 1">Forgot password? <a (click)="hintClick()">Click here.</a></mat-hint>
+    </mat-form-field>
+    <button type="submit" (click)="tryLogin(loginForm.value)"
+    [disabled]="!loginForm.valid"
+    class="btn btn-default formelements">{{isLoginMode ? 'Login' : 'Register'}}</button>
   </form>
-  <div class="formelements strike">
+  <app-saperator-label>or</app-saperator-label>
+  <!-- <div class="formelements strike">
     <span >
       Or
     </span>
-  </div>
-  <button type="button" class="btn btn-primary btn-block formelements" (click)="tryFacebookLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Facebook</button>
-  <button type="button" class="btn btn-danger btn-block formelements" (click)="tryGoogleLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Google</button>
-  <button type="button" class="btn btn-info btn-block formelements" (click)="tryTwitterLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Twitter</button>
+  </div> -->
+  <button type="button" class="btn btn-primary btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
+  (click)="tryFacebookLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Facebook</button>
+  <button type="button" class="btn btn-danger btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
+  (click)="tryGoogleLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Google</button>
+  <button type="button" class="btn btn-info btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
+  (click)="tryTwitterLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Twitter</button>
   <div class="formelements">
     <p>{{isLoginMode ? 'Don&quot;t have an account?' : 'Already have an account?'}} <a (click)="isLoginMode = !isLoginMode;">{{isLoginMode ? 'Register' : 'Login'}}.</a></p>
   </div>

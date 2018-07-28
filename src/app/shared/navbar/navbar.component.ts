@@ -6,6 +6,8 @@ import { User, Provider } from '../../core/user';
 import { LoginComponent } from '../login/login.component';
 import { UserService } from '../../core/user.service';
 import { EventsService } from '../../core/events.service';
+import { PrivacyComponent } from '../privacy/privacy.component';
+import { TosComponent } from '../tos/tos.component';
 
 @Component({
   selector: 'app-navbar',
@@ -41,6 +43,12 @@ export class NavbarComponent implements OnInit {
       }).catch();
     }
     this.showDraw = false;
+    this.evtSrvc.subscribe('showprivacy').subscribe(() => {
+      this.showDialog(PrivacyComponent);
+    });
+    this.evtSrvc.subscribe('showtos').subscribe(() => {
+      this.showDialog(TosComponent);
+    });
   }
 
   iconClick() {
@@ -73,9 +81,22 @@ export class NavbarComponent implements OnInit {
       case 'signout':
         this.signOut();
         break;
+      case 'privacypolicy':
+        this.showDialog(PrivacyComponent);
+        break;
+      case 'tos':
+        this.showDialog(TosComponent);
+        break;
     }
     this.showDraw = false;
   }
+  private showDialog(component: any) {
+    this.dialog.open(component, {
+      autoFocus: false,
+      disableClose: true
+    });
+  }
+
   private toggleDrawer () {
     this.showDraw = !this.showDraw;
     if (this.showDraw) {

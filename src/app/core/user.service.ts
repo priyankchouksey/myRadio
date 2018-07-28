@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import * as firebase from 'firebase';
 import { User, Provider } from './user';
 
@@ -8,6 +8,7 @@ import { User, Provider } from './user';
 })
 export class UserService {
   currentuser: User;
+  loginStatusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   public set currentUser(value: User) {
     this.currentuser = value;
   }
@@ -23,30 +24,13 @@ export class UserService {
           const user = new User(userdata.uid, true, userdata.displayName, '', '',
             userdata.email, userdata.photoURL, userdata.providerData[0].providerId);
             _self.currentuser = user;
+            _self.loginStatusChange.emit(true);
           resolve(user);
         } else {
           reject('No user logged in');
         }
       });
     });
-  }
-  getProviderName() {
-    let retVal: string;
-    switch (this.currentUser.provider) {
-      case Provider.GOOGLE:
-        retVal = 'Google';
-        break;
-      case Provider.FACEBOOK:
-        retVal = 'Facebook';
-        break;
-      case Provider.TWITTER:
-        retVal = 'Twitter';
-        break;
-      case Provider.EMAIL:
-        retVal = 'email';
-        break;
-    }
-    return retVal;
   }
   constructor() { }
 }

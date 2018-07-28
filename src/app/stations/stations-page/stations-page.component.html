@@ -1,56 +1,4 @@
-<!-- <app-section-header>my Favourites</app-section-header>
-<section fxLayout="row" fxLayout.xs="column">
-  <mat-card *ngFor="let station of (myStations | favStations)">
-    <mat-card-content routerLink="{{station.id}}" >
-      <div class="container">
-        <img mat-card-image src="{{station.logo ? station.logo : 'assets/images/radio.svg'}}" alt="{{station.name}}">
-      </div>
-    </mat-card-content>
-    <div class="content">
-      <h2>{{station.name}}</h2>
-      <small>{{station.frequency}} &bull; {{station.geo.city}}, {{station.geo.state}}</small>
-      <mat-divider></mat-divider>
-      <mat-card-actions align="end">
-        <button mat-icon-button (click)="play(station)">
-          <mat-icon>{{station.playing ? 'stop' : 'play_arrow'}}</mat-icon>
-        </button>
-        <span class="spacer"></span>
-        <button mat-icon-button (click)="changeFav(station)">
-            <mat-icon>{{station.favourite ? 'favorite' : 'favorite_border'}}</mat-icon>
-          </button>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item [matMenuTriggerFor]="sharemenu">
-            <mat-icon>share</mat-icon>
-            <span>Sharing</span>
-          </button>
-          <button mat-menu-item (click)="updateStation(station)">
-            <mat-icon>edit</mat-icon>
-            <span>Edit Station</span>
-          </button>
-        </mat-menu>
-        <mat-menu #sharemenu="matMenu">
-          <button mat-menu-item>
-            <mat-icon>share</mat-icon>
-            <span>Share this station</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>check_circle</mat-icon>
-            <span>Add to share list</span>
-          </button>
-          <button mat-menu-item>
-            <mat-icon>send</mat-icon>
-            <span>Share all selected</span>
-          </button>
-        </mat-menu>
-      </mat-card-actions>
-    </div>
-  </mat-card>
-</section> -->
 <br>
-<!-- <app-section-header>all Stations</app-section-header> -->
 <section fxLayout="row" fxLayout.xs="column">
   <mat-card *ngFor="let station of (myStations)">
     <mat-card-content routerLink="{{station.id}}" >
@@ -69,7 +17,6 @@
         <span class="spacer"></span>
         <button mat-icon-button (click)="changeFav(station)">
             <mat-icon>{{station.favourite ? 'favorite' : 'favorite_border'}}</mat-icon>
-            <!-- <span>Add to Favourite</span> -->
           </button>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>
@@ -79,21 +26,25 @@
             <mat-icon>share</mat-icon>
             <span>Sharing</span>
           </button>
-          <button mat-menu-item (click)="modifyStation(station)">
+          <button mat-menu-item *ngIf="station.createdby === this.userService.currentUser.id" (click)="modifyStation(station)">
             <mat-icon>edit</mat-icon>
             <span>Edit Station</span>
           </button>
+          <button mat-menu-item *ngIf="station.createdby === this.userService.currentUser.id" (click)="deleteStation(station)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete Station</span>
+          </button>
         </mat-menu>
         <mat-menu #sharemenu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="shareStation(station)">
             <mat-icon>share</mat-icon>
             <span>Share this station</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="toggleAddtoShare(station)">
             <mat-icon>check_circle</mat-icon>
-            <span>Add to share list</span>
+            <span>{{station.addedtoshare ? 'Remove from': 'Add to'}} share list</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="shareAll()">
             <mat-icon>send</mat-icon>
             <span>Share all selected</span>
           </button>

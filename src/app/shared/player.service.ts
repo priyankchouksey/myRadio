@@ -17,6 +17,10 @@ export class PlayerService implements OnDestroy {
   ngOnDestroy(): void {
     this.playList = null;
   }
+  /**
+   * plays the station using HTML5 audio player
+   * @param station object of station to be played.
+   */
   play(station?: Station) {
     if (this.isplaying) { this.stop(); }
     if (station) { this.addToList(station); } else { station = this.playList[this.currentIndex]; }

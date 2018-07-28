@@ -8,10 +8,10 @@
         </div>
         <div class="section-2n3col">
           <mat-form-field>
-            <input matInput placeholder="Station Name" type="text" [(ngModel)]= "station.name">
+            <input matInput placeholder="Station Name" type="text" [(ngModel)]= "station.name" required minlength="3" #name="ngModel">
           </mat-form-field>
           <mat-form-field >
-            <input matInput placeholder="Frequency" type="text" [(ngModel)]= "station.frequency">
+            <input matInput placeholder="Frequency" type="number" [(ngModel)]= "station.frequency" required min="88" max="108" #freq="ngModel">
           </mat-form-field>
           <mat-form-field>
             <input matInput placeholder="Assistant Keyword" type="text" [(ngModel)]= "station.assistKeyword">
@@ -19,7 +19,7 @@
         </div>
       </div>
       <mat-form-field>
-        <input matInput placeholder="Player URL" type="url" [(ngModel)] = "station.playurl" >
+        <input matInput placeholder="Player URL" type="url" [(ngModel)] = "station.playurl" required #url="ngModel">
       </mat-form-field>
       <div class="container">
         <mat-form-field class="section-3col">
@@ -40,6 +40,6 @@
   </section>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-raised-button color="primary" [disabled]="!station.name || !station.playurl" (click)="save(picUploader)">Save</button>
+    <button mat-raised-button color="primary" [disabled]="!(name.valid && freq.valid && url.valid)" (click)="save(picUploader)">Save</button>
     <button mat-raised-button (click)="cancel()">Cancel</button>
 </mat-dialog-actions>

@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Share Stations</h1>
+<input class="share-input" type="text" [readOnly]="singleShare" placeholder="Name for this share." [(ngModel)]="shareData.name">
+<mat-dialog-content>
+  <div *ngIf="shareData.stations === null || shareData.stations.length < 1">
+    Please select some stations to share from share context menu of an station.
+  </div>
+  <mat-selection-list #selectList *ngIf="shareData.stations && shareData.stations.length > 0">
+    <mat-list-option *ngFor="let item of shareData.stations; let lastitem = last; let idx = index; let isOdd=odd; let isEven=even" [class.odd]="isOdd" [class.even]="isEven" >
+        <span mat-line>{{item.name}}</span>
+        <p mat-line> {{item.frequency}} &bull; {{item.geo.city}}, {{item.geo.state}} </p>
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+<div class="save-container">
+    <button mat-raised-button (click)="save()">Save</button>
+  </div>
+  <input #shareURL class="share-input" readonly type="text" [ngModel]="shareData.shareUrl" placeholder="Click Save to get share URL">
+  <div class="share-btn-container">
+    <button class="share-btn" mat-raised-button (click)="openEmail()" [disabled]="shareData.shareUrl === undefined" >email</button>
+    <button class="share-btn" mat-raised-button (click)="copytoClipboard(shareURL)" [disabled]="shareData.shareUrl === undefined">copy</button>
+  </div>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>
+    cancel
+  </button>
+</mat-dialog-actions>

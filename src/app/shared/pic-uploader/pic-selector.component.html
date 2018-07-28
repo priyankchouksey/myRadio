@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Select a Picture</h1>
+<mat-dialog-content>
+<div class="selector-container">
+  <mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab [label]="isSmallScreen ? 'Web' : 'Use Web image'">
+      <mat-form-field>
+        <input matInput type="url" placeholder="type or paste url" [(ngModel)]="imageUrl">
+      </mat-form-field>
+      <div class="image-url">
+        <div class="preview-container">
+          <img class="imagepreview" [src]="imageUrlPreview === '' ? 'assets/images/image-preview.png' : imageUrlPreview" (error)="imageUrlError($event)" >
+        </div>
+        <label class="draglabel">
+            Change url if no preview.
+        </label>
+      </div>
+
+    </mat-tab>
+    <mat-tab [label]="isSmallScreen ? 'local' : 'Upload local image'">
+      <div class="image-upload" fileDrop [accept]="['image/*']"
+      (isFileOver)="fileOver($event)"
+      (fileDrop)="fileChange($event)"
+      [ngClass]="{'fileover': isFileOver}">
+        <div class="preview-container">
+          <img class="imagepreview" [src]="imageSelectPreview === '' ? 'assets/images/image-preview.png' : imageSelectPreview">
+        </div>
+        <input id="selectImage" type="file" (change)="fileChange($event.target.files)">
+        <label class="draglabel">
+            Drag a file here or click to choose.
+        </label>
+        <label class="draglistner" for="selectImage"></label>
+      </div>
+      <div class="image-dropbox">
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="closeDialog()">Ok</button>
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

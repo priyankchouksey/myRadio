@@ -11,14 +11,20 @@ import { PlayerComponent } from './player/player.component';
 import { SectionHeaderComponent } from './section-header/section-header.component';
 import { AuthGuardService } from '../core/auth-guard.service';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { DrawerMenuComponent } from './drawer-menu/drawer-menu.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { TosComponent } from './tos/tos.component';
+import { PicSelectorComponent } from './pic-uploader/pic-selector.component';
+import { SaperatorLabelComponent } from './saperator-label/saperator-label.component';
+import { FileDropDirective } from './pic-uploader/file-drop.directive';
 // import { Station } from './station';
 
 export { Station } from './station';
+export { Share } from './station-share';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
+  { path: 'privacy', component: HomeComponent, canActivate: [AuthGuardService] }
 ];
 @NgModule({
   imports: [
@@ -43,7 +49,8 @@ const routes: Routes = [
     ReactiveFormsModule
   ],
   declarations: [NavbarComponent, PicUploaderComponent, HomeComponent,
-    PlayerComponent, SectionHeaderComponent, LoginComponent, RegisterComponent, DrawerMenuComponent],
-    entryComponents: [LoginComponent]
+    PlayerComponent, SectionHeaderComponent, LoginComponent, DrawerMenuComponent,
+    PrivacyComponent, TosComponent, PicSelectorComponent, SaperatorLabelComponent, FileDropDirective],
+    entryComponents: [LoginComponent, PrivacyComponent, TosComponent, PicSelectorComponent]
 })
 export class SharedModule { }

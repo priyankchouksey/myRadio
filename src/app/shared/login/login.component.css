@@ -10,9 +10,14 @@
   width: calc(100% - 2em);
   margin: 1em
 }
-
+mat-form-field {
+  padding: 2px 14px;
+  width: 100%;
+}
 .error{
   color: red;
+  margin-left: 14px;
+  font-weight: normal;
 }
 @media (max-width: 768px) { /*breakpoint*/
   .close {
@@ -53,3 +58,25 @@
   left: 100%;
   margin-left: 15px;
 }
+
+.register-btn {
+  margin: 5px 1em;
+}
+mat-hint {
+  color: red;
+}
+/* input {
+  border-left: 3px solid;
+  border-radius: 5px;
+  transition: border-color .5s ease-out;
+}
+
+input:optional {
+  border-left-color: #999;
+}
+input:required {
+  border-left-color: palegreen;
+}
+input:invalid {
+  border-left-color: salmon;
+} */

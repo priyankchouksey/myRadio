@@ -32,13 +32,13 @@ export class StationsService {
      return this.myStations;
    }
    refreshStations(userID?: string) {
-    this.ngFs.collection('userstations', queryRef => {
-      let query: any = queryRef;
-      // query = query.where('userid', '==', this.user.id);
-      query = query.where('userid', '==', this.usrSrvc.currentUser.id);
-      return query;
-    }).ref.get().then(res => {
-      res.forEach(doc => {
+    // this.ngFs.collection('userstations', queryRef => {
+    //   let query: any = queryRef;
+    //   query = query.where('userid', '==', this.usrSrvc.currentUser.id);
+    //   return query;
+    // }).ref.get().then(res => {
+      this.ngFs.collection('userstations').ref.where('userid', '==', this.usrSrvc.currentUser.id).get().then(res => {
+        res.forEach(doc => {
         const usdata: any = doc.data();
         const usID = doc.id;
         if (usdata.stationRef) {
@@ -72,11 +72,22 @@ export class StationsService {
       createdby: data.createdby,
       active: true
     };
-    this.stationCollection.add(statData).then((value) => {
-      // update user Station table
-      const userStationData: any = {userid: data.createdby, favourite: false, isplaying: false, playCount: 0};
-      userStationData.stationRef = value;
-      this.userStationCollection.add(userStationData);
+    return new Promise((resolve, reject) => {
+
+      this.stationCollection.add(statData).then((value) => {
+        // update user Station table
+        const userStationData: any = {userid: data.createdby, favourite: false, isplaying: false, playCount: 0};
+        userStationData.stationRef = value;
+        this.userStationCollection.add(userStationData).then(() => {
+          resolve('Saved Successful...');
+        })
+        .catch(err => {
+          reject({'title': 'Error while saving user station data', 'error': err});
+        });
+      })
+      .catch(err => {
+        reject({'title': 'Error while saving station data', 'error': err});
+      });
     });
    }
 
