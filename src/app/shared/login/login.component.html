@@ -1,36 +1,65 @@
 <h1 mat-dialog-title>{{isLoginMode ? 'Login' : 'Register'}}</h1>
 
 <mat-dialog-content>
-  <form [formGroup]="loginForm">
-    <mat-form-field>
-      <input matInput type="email" #email formControlName="email" placeholder="Email address" autofocus required (input)="valueChanged($event)">
-    <!-- <input matInput type="email" #email formControlName="email" class="form-control formelements" placeholder="Email address" autofocus required (input)="valueChanged($event)"> -->
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="password" placeholder="Password" formControlName="password" required minlength="8">
-      <mat-hint *ngIf="wrongpwdCount > 1">Forgot password? <a (click)="hintClick()">Click here.</a></mat-hint>
-    </mat-form-field>
-    <button type="submit" (click)="tryLogin(loginForm.value)"
-    [disabled]="!loginForm.valid"
-    class="btn btn-default formelements">{{isLoginMode ? 'Login' : 'Register'}}</button>
-  </form>
-  <app-saperator-label>or</app-saperator-label>
-  <!-- <div class="formelements strike">
-    <span >
-      Or
-    </span>
-  </div> -->
-  <button type="button" class="btn btn-primary btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
-  (click)="tryFacebookLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Facebook</button>
-  <button type="button" class="btn btn-danger btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
-  (click)="tryGoogleLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Google</button>
-  <button type="button" class="btn btn-info btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
-  (click)="tryTwitterLogin()">{{isLoginMode ? 'Login' : 'Register'}} with Twitter</button>
-  <div class="formelements">
-    <p>{{isLoginMode ? 'Don&quot;t have an account?' : 'Already have an account?'}} <a (click)="isLoginMode = !isLoginMode;">{{isLoginMode ? 'Register' : 'Login'}}.</a></p>
+  <div *ngIf="isLoginMode" >
+    <form [formGroup]="loginForm">
+      <mat-form-field>
+        <input matInput type="email" #email formControlName="email" placeholder="Email address" autofocus required (input)="valueChanged($event)">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password" required minlength="8">
+        <mat-hint *ngIf="wrongpwdCount > 1">Forgot password? <a (click)="resetPassword()">Click here.</a></mat-hint>
+      </mat-form-field>
+      <button type="submit" (click)="tryLogin(loginForm.value)"
+      [disabled]="!loginForm.valid"
+      class="btn btn-default formelements">Login</button>
+      <div style="margin: 0px 14px 14px;">
+        Don&quot;t have an account? <a style="cursor: pointer;" (click)="isLoginMode = !isLoginMode;">Register</a>
+      </div>
+    </form>
+    <app-saperator-label>or</app-saperator-label>
+    <button type="button" class="btn btn-primary btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
+    (click)="tryFacebookLogin()">Login with Facebook</button>
+    <button type="button" class="btn btn-danger btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
+    (click)="tryGoogleLogin()">Login with Google</button>
+    <button type="button" class="btn btn-info btn-block formelements" [ngClass]="{'register-btn' : !isLoginMode}"
+    (click)="tryTwitterLogin()">Login with Twitter</button>
   </div>
-
+  <div *ngIf="!isLoginMode">
+    <section>
+      <form [formGroup]="registerForm">
+        <div class="container">
+          <div class="section-3col">
+            <app-pic-uploader #userPic
+            defaultBackgound="/assets/images/user-icon.png"></app-pic-uploader>
+          </div>
+          <div class="section-2n3col">
+            <mat-form-field>
+              <input matInput placeholder="First Name" type="text" formControlName="fname" required minlength="3">
+            </mat-form-field>
+            <mat-form-field >
+              <input matInput placeholder="Last Name" type="text" formControlName="lname" minlength="3">
+            </mat-form-field>
+          </div>
+        </div>
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Email" type="email" formControlName="email" required>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Password" type="password" formControlName="password" required minlength="8">
+          </mat-form-field>
+          <mat-form-field hintLabel="{{registerForm.controls.repassword.errors?.MatchPassword ? 'Password does not match' : ''}}">
+            <input #repassword matInput placeholder="Re-enter Password" type="password" formControlName="repassword" required minlength="8">
+          </mat-form-field>
+        </div>
+      </form>
+    </section>
+  </div>
 </mat-dialog-content>
-<button mat-icon-button class="close" mat-dialog-close>
-  <mat-icon>cancel</mat-icon>
-</button>
+<mat-dialog-actions>
+  <button mat-raised-button color="accent" *ngIf="!isLoginMode" [disabled]="!registerForm.valid" (click)="registerUser(userPic)">Register</button>
+  <button mat-raised-button mat-dialog-close>
+    Cancel
+  </button>
+</mat-dialog-actions>

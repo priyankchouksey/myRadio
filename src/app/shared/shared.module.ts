@@ -24,7 +24,8 @@ export { Share } from './station-share';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
-  { path: 'privacy', component: HomeComponent, canActivate: [AuthGuardService] }
+  { path: 'privacy', component: HomeComponent, canActivate: [AuthGuardService] },
+  { path: 'tos', component: HomeComponent, canActivate: [AuthGuardService] }
 ];
 @NgModule({
   imports: [

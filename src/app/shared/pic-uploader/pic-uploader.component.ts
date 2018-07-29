@@ -35,24 +35,20 @@ export class PicUploaderComponent implements OnInit {
   get imageSource() {
     return this.imgSrc;
   }
+  @Input()
+  defaultBackgound: string;
+
   constructor(private usrSrvc: UserService, private storage: AngularFireStorage, private dialog: MatDialog) {
 
    }
 
   ngOnInit() {
+    if (this.defaultBackgound) {
+      document.getElementById('imagePreview').style['background-image'] = 'url(' + this.defaultBackgound + ')';
+      this.imageSourceChange.emit(this.imgSrc);
+    }
   }
   imageChange(event) {
-    // this.file = event.target.files[0];
-    // if (this.file.type.split('/')[0] !== 'image') {
-    //   alert('I do not understand this file type. May be image file should work!');
-    // } else {    const reader = new FileReader();
-    //   reader.onload = (event) => {
-    //     if (reader.result) {
-    //       this.imageSource = reader.result;
-    //     }
-    //   };
-    //   reader.readAsDataURL(this.file);
-    // }
     this.picdialog = this.dialog.open(PicSelectorComponent);
     this.picdialog.afterClosed().subscribe(data => {
       if (data) {
@@ -65,7 +61,6 @@ export class PicUploaderComponent implements OnInit {
     return Promise((res, rej) => {
       if (this.dataToSave.imageType === 'FILE') {
         try {
-        // this.usrSrvc.getCurrentUser().then(user => {
           const path = this.usrSrvc.currentUser.id + '/' + filename + '.logo';
           const fileRef = this.storage.ref(path);
           const task = this.storage.upload(path, this.dataToSave.file);
@@ -75,12 +70,10 @@ export class PicUploaderComponent implements OnInit {
               this.downloadURL = fileRef.getDownloadURL();
               this.downloadURL.subscribe(image => {
                 res(image);
-                // this.imageSource = image;
                 });
             })
           )
           .subscribe();
-        // });
       } catch (error) {
         rej('Error Uploading file...');
       }
@@ -89,11 +82,4 @@ export class PicUploaderComponent implements OnInit {
     }
     });
   }
-  // newGuid() {
-  //       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-  //           // tslint:disable-next-line:no-bitwise
-  //           const r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
-  //           return v.toString(16);
-  //       });
-  //   }
 }

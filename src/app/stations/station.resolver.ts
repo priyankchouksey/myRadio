@@ -27,7 +27,8 @@ export class StationResolver implements Resolve<User> {
           // user.provider = res.providerData[0].providerId;
           return resolve(user);
         }
-      }, err => {
+      })
+      .catch( err => {
         this.router.navigate(['/home']);
         return reject(err);
       });

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from '../../core/auth.service';
@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Provider } from '../../core/user';
 import { UserService } from '../../core/user.service';
 import { MatSnackBarRef, MatSnackBar } from '../../../../node_modules/@angular/material';
+import { PasswordValidator } from './password-validator';
+import { PicUploaderComponent } from '../pic-uploader/pic-uploader.component';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +16,19 @@ import { MatSnackBarRef, MatSnackBar } from '../../../../node_modules/@angular/m
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  registerForm: FormGroup;
   isLoginMode = true;
   wrongpwdCount = 0;
   errorSnackBar: MatSnackBarRef<any>;
-
+  newUser = {
+    'logo': '',
+    'fname': '',
+    'lname': '',
+    'email': '',
+    'password': '',
+    'repassword': ''
+  };
+  @ViewChild('userPic') picUploader: PicUploaderComponent;
   @HostListener('window:resize', ['$event'])
     onResize(event?) {
       let width: string;
@@ -34,7 +45,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<LoginComponent>,
-    private snackBarRef: MatSnackBar
+    private snackBarRef: MatSnackBar,
+    private zone: NgZone
   ) {
     this.createForm();
   }
@@ -56,6 +68,15 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
+    });
+    this.registerForm = this.fb.group({
+      fname: ['', [Validators.required]],
+      lname: [''],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      repassword: ['', [Validators.required]]
+    }, {
+      validator: PasswordValidator.MatchPassword
     });
   }
 
@@ -84,16 +105,14 @@ export class LoginComponent implements OnInit {
     if (this.isLoginMode) {
       this.authService.login(Provider.EMAIL, value)
       .then(res => {
-        this.postLogin(res);
-      }, err => {
-        this.ShowError(err);
-      });
-    } else {
-      this.authService.register(value)
-      .then(res => {
-        this.postLogin(res);
-      }, err => {
-        console.log(err);
+        if (!res.user.emailVerified) {
+          this.authService.logout();
+          this.ShowError({'code': 'auth/email-not-verified', 'message': 'Email not verified.'});
+        } else {
+          this.postLogin(res);
+        }
+      })
+      .catch(err => {
         this.ShowError(err);
       });
     }
@@ -116,6 +135,45 @@ export class LoginComponent implements OnInit {
       this.errorSnackBar.dismiss();
     }
   }
+  registerUser() {
+    this.authService.register(this.registerForm.value)
+    .then(res => {
+      if (res) {
+        if (this.picUploader.imageSource && this.picUploader.imageSource !== '') {
+          this.picUploader.saveImage('myPic').then(value => {
+            const name  = this.registerForm.value.fname + (this.registerForm.value.lname ? ' ' + this.registerForm.value.lname : '');
+            res.user.updateProfile({
+              displayName: name,
+              photoURL: value
+            });
+            res.user.sendEmailVerification().then(() => {
+              this.snackBarRef.open('Verification email has been sent, verify and continue to login', 'DISMISS', { duration: 5000});
+              this.isLoginMode = true;
+            });
+          })
+          .catch(err => {
+            this.snackBarRef.open('User created but error while saving Profile picture', 'DISMISS', { duration: 5000});
+            this.isLoginMode = true;
+          });
+        } else {
+          const name  = this.registerForm.value.fname + (this.registerForm.value.lname ? ' ' + this.registerForm.value.lname : '');
+          res.user.updateProfile({
+            displayName: name
+          });
+          res.user.sendEmailVerification().then(() => {
+            this.snackBarRef.open('Verification email has been sent, verify and continue to login', 'DISMISS', { duration: 5000});
+            this.isLoginMode = true;
+          });
+        }
+      }
+      // this.postLogin(res);
+    }, err => {
+      this.ShowError(err);
+    });
+  }
+  resetPassword() {
+
+  }
   private ShowError(error: any) {
     if (!error) { return ''; }
     let errorStr: string;
@@ -132,6 +190,14 @@ export class LoginComponent implements OnInit {
         this.wrongpwdCount++;
         errorStr = 'Incorrect Password';
         break;
+      case 'auth/email-not-verified':
+        this.wrongpwdCount++;
+        errorStr = 'Email ID not verified, please verify.';
+        break;
+      case 'auth/email-already-in-use':
+        errorStr = error.message;
+        actionStr = 'Open Login';
+        break;
       default:
         errorStr = error.message;
         break;
@@ -140,12 +206,14 @@ export class LoginComponent implements OnInit {
       duration: 5000
     });
     this.errorSnackBar.afterDismissed().subscribe(data => {
-      if (data  && actionStr === 'Register') {
-        this.isLoginMode = false;
-      }
+      this.zone.run(() => {
+        if (data.dismissedByAction  && actionStr === 'Register') {
+          this.isLoginMode = false;
+        }
+        if (data.dismissedByAction && actionStr === 'Open Login') {
+          this.isLoginMode = true;
+        }
+      });
     });
-  }
-  hintClick() {
-
   }
 }

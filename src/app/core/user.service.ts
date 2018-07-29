@@ -20,12 +20,16 @@ export class UserService {
     return new Promise<any>((resolve, reject) => {
       const retVal = firebase.auth().onAuthStateChanged(function(userdata) {
         if (userdata) {
-          console.log(userdata);
-          const user = new User(userdata.uid, true, userdata.displayName, '', '',
-            userdata.email, userdata.photoURL, userdata.providerData[0].providerId);
-            _self.currentuser = user;
-            _self.loginStatusChange.emit(true);
-          resolve(user);
+          if (userdata.providerData[0].providerId === 'password' && !userdata.emailVerified) {
+            reject({'code': 'auth/email-not-verified', 'message': 'Email not verified.'});
+          } else {
+            console.log(userdata);
+            const user = new User(userdata.uid, true, userdata.displayName, '', '',
+              userdata.email, userdata.photoURL, userdata.providerData[0].providerId);
+              _self.currentuser = user;
+              _self.loginStatusChange.emit(true);
+            resolve(user);
+          }
         } else {
           reject('No user logged in');
         }

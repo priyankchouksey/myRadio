@@ -40,7 +40,9 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     if (!(this.usrSrvc.currentUser && this.usrSrvc.currentUser.loggedIn)) {
       this.usrSrvc.getCurrentUser().then(user => {
-      }).catch();
+      }).catch(err => {
+        console.log(err);
+      });
     }
     this.showDraw = false;
     this.evtSrvc.subscribe('showprivacy').subscribe(() => {
