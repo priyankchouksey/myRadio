@@ -18,15 +18,6 @@ export class HomeComponent implements OnInit {
     // }
   }
   openDoc(type: string) {
-    switch (type) {
-      case 'privacy':
-        this.evtSrvc.publish('showprivacy');
-        break;
-      case 'tos':
-        this.evtSrvc.publish('showtos');
-        break;
-      default:
-        break;
-    }
+    this.evtSrvc.publish(type);
   }
 }

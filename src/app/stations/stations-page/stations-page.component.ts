@@ -12,6 +12,7 @@ import { StationComponent } from '../station/station.component';
 import { EventsService } from '../../core/events.service';
 import { ShareStationService } from '../share-station.service';
 import { ShareStationComponent } from '../share-station/share-station.component';
+import { ManageSharesComponent } from '../manage-shares/manage-shares.component';
 
 @Component({
   selector: 'app-stations-page',
@@ -32,6 +33,12 @@ export class StationsPageComponent implements OnInit {
   ngOnInit() {
     this.evtSrvc.subscribe('CREATE_STATION').subscribe(value => {
       this.modifyStation(new Station());
+    });
+    this.evtSrvc.subscribe('SHARE_STATION').subscribe(value => {
+      this.shareAll();
+    });
+    this.evtSrvc.subscribe('MANAGE_SHARE').subscribe(value => {
+      this.dialog.open(ManageSharesComponent);
     });
     this.stationSrvc.getStations().subscribe((value) => {
       console.log(value);

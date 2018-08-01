@@ -1,0 +1,27 @@
+.spacer {
+  flex-grow: 1;
+}
+.fixActionRow {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.odd-panel {
+  background-color: lightgray;
+}
+.even-panel {
+  background-color: gray;
+}
+.odd-station {
+  background-color: #f2f9ff;
+
+}
+.even-station {
+  background-color: #eceff3;
+}
+mat-list-item {
+  height: 50px;
+}
+mat-form-field {
+  width: 100%;
+}

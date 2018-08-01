@@ -8,6 +8,7 @@ import { UserService } from '../../core/user.service';
 import { EventsService } from '../../core/events.service';
 import { PrivacyComponent } from '../privacy/privacy.component';
 import { TosComponent } from '../tos/tos.component';
+import { ContactComponent } from '../contact/contact.component';
 
 @Component({
   selector: 'app-navbar',
@@ -51,6 +52,9 @@ export class NavbarComponent implements OnInit {
     this.evtSrvc.subscribe('showtos').subscribe(() => {
       this.showDialog(TosComponent);
     });
+    this.evtSrvc.subscribe('contactus').subscribe(() => {
+      this.sendMail();
+    });
   }
 
   iconClick() {
@@ -75,7 +79,10 @@ export class NavbarComponent implements OnInit {
         this.evtSrvc.publish('CREATE_STATION', null);
         break;
       case 'sharestation':
-
+        this.evtSrvc.publish('SHARE_STATION', null);
+        break;
+      case 'manageshare':
+        this.evtSrvc.publish('MANAGE_SHARE', null);
         break;
       case 'showguide':
 
@@ -88,6 +95,10 @@ export class NavbarComponent implements OnInit {
         break;
       case 'tos':
         this.showDialog(TosComponent);
+        break;
+      case 'contactus':
+        this.sendMail();
+        // this.showDialog(ContactComponent);
         break;
     }
     this.showDraw = false;
@@ -108,5 +119,12 @@ export class NavbarComponent implements OnInit {
         this.showingMe = false;
       }, 100);
     }
+  }
+  private sendMail() {
+    const mailto_link = 'mailto:getintouch@myradio.live?subject=[Feedback]&body=Describe here';
+    const win = window.open(mailto_link, '_blank');
+    setTimeout(() => {
+      win.close();
+    }, 100);
   }
 }

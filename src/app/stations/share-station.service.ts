@@ -4,13 +4,13 @@ import { Share, ShareDoc, ShareStation } from '../shared/station-share';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UserService } from '../core/user.service';
 import { StationsService } from './stations.service';
-
+import * as _ from 'underscore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShareStationService {
-  list: Array<Station> = new Array<Station>();
+  list: Array<ShareStation> = new Array<ShareStation>();
   shareCollection: AngularFirestoreCollection<any>;
   shareStationCollection: AngularFirestoreCollection<any>;
   userStationCollection: AngularFirestoreCollection<any>;
@@ -24,7 +24,9 @@ export class ShareStationService {
   add(station: Station) {
     const found = this.list ? this.list.findIndex(item => item.id === station.id) : -1;
     if (found < 0) {
-      this.list.unshift(station);
+      const shr: ShareStation = new ShareStation();
+      _.extend(shr, station);
+      this.list.unshift(shr);
     }
     station.addedtoshare = true;
   }
@@ -38,20 +40,83 @@ export class ShareStationService {
   getShareStationList() {
     return this.list;
   }
+  // saveShare(shareData: Share) {
+  //   return new Promise((resolve, reject) => {
+  //     try {
+  //     const statData: any = {
+  //       name: shareData.name
+  //     };
+  //     this.shareCollection.add(statData).then((value) => {
+  //       shareData.stations.forEach(element => {
+  //         const shareStationData: any = {stationid: element.id, shareid: value.id};
+  //         this.shareStationCollection.add(shareStationData);
+  //       });
+  //       shareData.id = value.id;
+  //       resolve('Success');
+  //     });
+  //     } catch (error) {
+  //       reject(error);
+  //     }
+  //   });
+  // }
   saveShare(shareData: Share) {
     return new Promise((resolve, reject) => {
       try {
       const statData: any = {
-        name: shareData.name
+        name: shareData.name,
+        createdate: new Date(Date.now()),
+        importcount: 0,
+        userid: this.usrSrvc.currentUser.id
       };
       this.shareCollection.add(statData).then((value) => {
         shareData.stations.forEach(element => {
-          const shareStationData: any = {stationid: element.id, shareid: value.id};
-          this.shareStationCollection.add(shareStationData);
+          if (element.selected) {
+            const shareStationData: any = {shareid: value.id, importcount: 0};
+            shareStationData.stationRef = this.ngFs.doc<Station>(`/stations/${element.id}`).ref;
+            this.shareStationCollection.add(shareStationData);
+          }
         });
         shareData.id = value.id;
         resolve('Success');
       });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  getShares() {
+    return new Promise((resolve, reject) => {
+      try {
+        const retVal: Array<Share> = new Array<Share>();
+        this.shareCollection.ref.where('userid', '==', this.usrSrvc.currentUser.id).get().then(res => {
+          let shareCount = res.size;
+          res.forEach(shareDoc => {
+            const shrid = shareDoc.id;
+            const shrdata: any = shareDoc.data();
+            const retData: Share = new Share({id: shrid, ...shrdata});
+            this.shareStationCollection.ref.where('shareid', '==', shrid).get().then(shrstncol => {
+              let stationCount = shrstncol.size;
+              shrstncol.forEach(shrstnDoc => {
+                const shrstndata = shrstnDoc.data();
+                if (shrstndata.stationRef) {
+                  shrstndata.stationRef.get().then(stndoc => {
+                    const stnid = stndoc.id;
+                    const stndata = stndoc.data();
+                    retData.stations.push(new ShareStation({stnid, ...stndata}));
+                    stationCount--;
+                    if (stationCount === 0) {
+                      retVal.push(retData);
+                      shareCount--;
+                      if (shareCount === 0) {
+                        resolve(retVal);
+                      }
+                    }
+                  });
+                }
+              });
+            });
+          });
+        });
       } catch (error) {
         reject(error);
       }
@@ -75,7 +140,7 @@ export class ShareStationService {
           srres.forEach(doc => {
             const stnshrdata = doc.data();
             const id = stnshrdata.stationid;
-            this.ngFs.doc(`/stations/${stnshrdata.stationid}`).ref.get().then(stndoc => {
+            stnshrdata.stationRef.get().then(stndoc => {
               const stndata = stndoc.data();
               retVal.stations.push(new ShareStation({id, ...stndata}));
               stnCounter--;
@@ -101,7 +166,14 @@ export class ShareStationService {
           this.userStationCollection.add(saveData);
         }
       });
+      // this.updateImportCount(shareData.id);
       resolve();
+    });
+  }
+  updateImportCount(id: string) {
+    const ref = this.ngFs.doc(`shares/${id}`).snapshotChanges();
+    ref.subscribe(value => {
+
     });
   }
 }

@@ -40,4 +40,7 @@ export class ImportShareComponent implements OnInit {
     })
     .catch();
   }
+  cancel() {
+    this.router.navigate(['myStations']);
+  }
 }

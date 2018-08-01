@@ -11,6 +11,7 @@ import { StationResolver } from './station.resolver';
 import { ShareStationComponent } from './share-station/share-station.component';
 import { ShareStationService } from './share-station.service';
 import { ImportShareComponent } from './import-share/import-share.component';
+import { ManageSharesComponent } from './manage-shares/manage-shares.component';
 
 const routes: Routes = [
   { path: 'myStations', component: StationsPageComponent, resolve: {data: StationResolver}},
@@ -21,8 +22,13 @@ const routes: Routes = [
     SharedModule, RouterModule.forChild(routes)
   ],
   exports: [StationComponent, StationsPageComponent],
-  declarations: [StationsPageComponent, StationComponent, FavStationsPipe, ShareStationComponent, ImportShareComponent],
+  declarations: [StationsPageComponent,
+    StationComponent,
+    FavStationsPipe,
+    ShareStationComponent,
+    ImportShareComponent,
+    ManageSharesComponent],
   providers: [StationsService, StationResolver, ShareStationService],
-  entryComponents: [StationComponent, ShareStationComponent]
+  entryComponents: [StationComponent, ShareStationComponent, ManageSharesComponent]
 })
 export class StationsModule { }

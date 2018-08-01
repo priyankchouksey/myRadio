@@ -1,8 +1,8 @@
 .appcontainer{
-  max-height: calc(100% - 128px);
+  max-height: calc(100% - 56px);
   top: 64px;
   position: fixed;
   width: 100%;
   overflow: scroll;
-  bottom: 64px;
+  bottom: 0px;
 }

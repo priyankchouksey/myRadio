@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Contact us</h1>
+
+<mat-dialog-content>
+  <form [formGroup]="formData">
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="Name" type="text"  required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="email" placeholder="Email" type="email" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select #reason formControlName="reason" value='feedback'>
+        <mat-option *ngFor="let reason of reasons" [value]="reason.value">{{reason.title}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <span matPrefix>[{{reason.value}}]:</span>
+      <input matInput placeholder="Subject" type="text" formControlName="subject" required>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea matInput [placeholder]="'Describe the ' + reason.value" rows="5" formControlName="body" required></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button [disabled]="!formData.valid" color="accent"(click)="sendMail()">Send</button>
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
