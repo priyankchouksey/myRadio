@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StationsService } from '../stations.service';
-import { Observable } from 'rxjs/observable';
 import { Station } from '../../shared/station';
-import { AuthService } from '../../core/auth.service';
-import { User } from '../../core/core.module';
-import { BehaviorSubject } from 'rxjs';
 import { PlayerService } from '../../shared/player.service';
 import { UserService } from '../../core/user.service';
 import { MatDialog } from '@angular/material';
@@ -42,22 +38,17 @@ export class StationsPageComponent implements OnInit {
     this.evtSrvc.subscribe('MANAGE_SHARE').subscribe(value => {
       this.dialog.open(ManageSharesComponent);
     });
-    this.stationSrvc.getStations().subscribe((value) => {
-      console.log(value);
-      if (value) {
-        this.myStations.unshift(value);
-        if (value.favourite) {
-          this.playerSrvc.addToList(value);
+    this.refreshStations();
+  }
+  refreshStations() {
+    this.stationSrvc.getStations().then(stations => {
+      this.myStations = stations as Array<Station>;
+      this.myStations.forEach(stn => {
+        if (stn.favourite) {
+          this.playerSrvc.addToList(stn);
         }
-      }
+      });
     });
-    this.stationSrvc.refreshStations();
-
-    // const temp = this.myStations.subscribe(data => {
-    //   // temp = data);
-    //  console.log(data);
-
-    // });
   }
   play(station: Station) {
     if (station.playing) {
@@ -80,9 +71,14 @@ export class StationsPageComponent implements OnInit {
     this.stationSrvc.update(station);
   }
   modifyStation(station: Station) {
-    this.dialog.open(StationComponent, {
+    const dlg = this.dialog.open(StationComponent, {
       disableClose: true,
       data: station
+    });
+    dlg.afterClosed().subscribe(data => {
+      if (data) {
+        this.refreshStations();
+      }
     });
   }
   deleteStation(station: Station) {
@@ -90,6 +86,7 @@ export class StationsPageComponent implements OnInit {
   }
   shareStation(station: Station) {
     // this.shrStnSrvc.add(station);
+    // tslint:disable-next-line:prefer-const
     let shrStn: ShareStation = new ShareStation();
     _.extend(shrStn, station);
     this.dialog.open(ShareStationComponent, {

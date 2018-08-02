@@ -41,5 +41,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-raised-button color="primary" [disabled]="!(name.valid && freq.valid && url.valid)" (click)="save(picUploader)">Save</button>
-    <button mat-raised-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button (click)="cancel(false)">Cancel</button>
 </mat-dialog-actions>

@@ -28,15 +28,34 @@ export class StationsService {
     //   this.user =  user;
     // });
    }
-   getStations() {
-     return this.myStations;
+   getStations(userID?: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const retVal: Array<Station> = new Array<Station>();
+        this.ngFs.collection('userstations').ref.where('userid', '==', this.usrSrvc.currentUser.id).get().then(res => {
+          let stnCount = res.size;
+          res.forEach(doc => {
+            const usdata: any = doc.data();
+            const usID = doc.id;
+            if (usdata.stationRef) {
+              usdata.stationRef.get().then(station => {
+                const id = station.id;
+                const sdata = station.data();
+                retVal.push( new Station({id, usID, ...sdata, ...usdata}));
+                stnCount--;
+                if (stnCount === 0) {
+                  resolve(retVal);
+                }
+              });
+            }
+          });
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
    }
    refreshStations(userID?: string) {
-    // this.ngFs.collection('userstations', queryRef => {
-    //   let query: any = queryRef;
-    //   query = query.where('userid', '==', this.usrSrvc.currentUser.id);
-    //   return query;
-    // }).ref.get().then(res => {
       this.ngFs.collection('userstations').ref.where('userid', '==', this.usrSrvc.currentUser.id).get().then(res => {
         res.forEach(doc => {
         const usdata: any = doc.data();

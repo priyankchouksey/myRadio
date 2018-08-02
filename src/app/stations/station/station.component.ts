@@ -53,7 +53,7 @@ export class StationComponent implements OnInit {
         this.station.createdate = new Date(Date.now());
         this.station.createdby = this.usrSrvc.currentUser.id;
         this.stationSrvc.create(this.station).then(() => {
-          this.dialogRef.close();
+          this.cancel(true);
         })
         .catch(err => {
           this.snackBar.open('Error while saving data.', 'Send to Developer', {duration: 2000});
@@ -61,7 +61,7 @@ export class StationComponent implements OnInit {
       });
     }
   }
-  cancel() {
-    this.dialogRef.close();
+  cancel(success: boolean) {
+    this.dialogRef.close(success);
   }
 }

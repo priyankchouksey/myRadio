@@ -16,7 +16,8 @@
         </button>
         <span class="spacer"></span>
         <button mat-icon-button (click)="changeFav(station)">
-            <mat-icon>{{station.favourite ? 'favorite' : 'favorite_border'}}</mat-icon>
+            <!-- <mat-icon *ngClass="{'green-icon': station.favourite, 'white-icon': !station.faourite}">playlist_add</mat-icon> -->
+            <mat-icon [color]="station.favourite ? 'accent': ''" >{{station.favourite ? 'playlist_add_check' : 'playlist_add'}}</mat-icon>
           </button>
         <button mat-icon-button [matMenuTriggerFor]="menu">
           <mat-icon>more_vert</mat-icon>

@@ -12,6 +12,7 @@ export class PlayerService implements OnDestroy {
   private audioPlayer = new Audio();
   currentIndex: number;
   private isplaying = false;
+  private userStopped: boolean = true;
 
   constructor() { }
   ngOnDestroy(): void {
@@ -22,10 +23,15 @@ export class PlayerService implements OnDestroy {
    * @param station object of station to be played.
    */
   play(station?: Station) {
-    if (this.isplaying) { this.stop(); }
+    this.userStopped = false;
+    if (this.isplaying) {
+      this.audioPlayer.src = '';
+      this.playList[this.currentIndex].playing = false;
+    }
     if (station) { this.addToList(station); } else { station = this.playList[this.currentIndex]; }
 
     this.audioPlayer.src = station.playurl;
+    this.informSubject('streamdata', 'Connecting...');
     this.audioPlayer.play().then(data => {
       this.playList[this.currentIndex].playing = true;
       this.isplaying = true;
@@ -37,6 +43,7 @@ export class PlayerService implements OnDestroy {
     });
   }
   stop() {
+    this.userStopped = true;
     this.isplaying = false;
     this.audioPlayer.src = '';
     this.playList[this.currentIndex].playing = false;
@@ -48,16 +55,19 @@ export class PlayerService implements OnDestroy {
     const wasPlaying = this.isplaying;
     if (wasPlaying) { this.stop(); }
     this.currentIndex++;
-    if (wasPlaying) { this.play(); }
+    this.informSubject('playstatus', 'Next');
+    if (wasPlaying || !this.userStopped) { this.play(); }
   }
   playPrevious() {
     const wasPlaying = this.isplaying;
     if (wasPlaying) { this.stop(); }
     this.currentIndex--;
-    if (wasPlaying) { this.play(); }
+    this.informSubject('playstatus', 'Previous');
+    if (wasPlaying || !this.userStopped) { this.play(); }
   }
   playSelected(index: number) {
     this.currentIndex = index;
+    this.informSubject('playstatus', 'Stopped...');
     this.play();
   }
   get isPlaying(): boolean {
