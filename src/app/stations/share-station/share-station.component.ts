@@ -11,9 +11,10 @@ import { Station } from '../../shared/station';
   styleUrls: ['./share-station.component.css']
 })
 export class ShareStationComponent implements OnInit, AfterViewInit {
-  singleShare: boolean;
   // generatedURL: string;
   shareData: Share;
+  shareSaved: boolean;
+  showSelection: boolean;
   @ViewChild('selectList') selectList: MatSelectionList;
   @HostListener('window:resize', ['$event'])
     onResize(event?) {
@@ -44,13 +45,13 @@ export class ShareStationComponent implements OnInit, AfterViewInit {
 
     if (this.data) {
       // Sharing a single station
-      this.singleShare = true;
       this.shareData.stations = this.data;
       this.shareData.name = this.data[0].name;
+      this.showSelection = false;
     } else {
       // sharing a list
-      this.singleShare = false;
       this.shareData.stations = <Array<ShareStation>> this.shrStnSrvc.getShareStationList();
+      this.showSelection = true;
     }
     // this.generatedURL = 'http://dummy.url/share/32nsdekrbwek324';
   }
@@ -63,6 +64,7 @@ export class ShareStationComponent implements OnInit, AfterViewInit {
   save() {
     this.shrStnSrvc.saveShare(this.shareData).then(() => {
       this.shareData.shareUrl = location.origin + '/shared/' + this.shareData.id;
+      this.shareSaved = true;
     });
     // this.shareData.shareUrl = 'dummy.com';
   }
@@ -80,5 +82,10 @@ ${this.usrSrvc.currentUser.name}`;
     inputBox.select();
     document.execCommand('copy');
     inputBox.setSelectionRange(0, 0);
+  }
+  noneSelected() {
+    return this.shareData.stations.findIndex(value => {
+      return value.selected;
+    }) === -1;
   }
 }

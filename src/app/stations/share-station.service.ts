@@ -131,16 +131,12 @@ export class ShareStationService {
         const sdata: any = res.data();
         retVal.id = res.id;
         retVal.name = sdata.name;
-        this.ngFs.collection('sharestations', queryRef => {
-          let query: any = queryRef;
-          query = query.where('shareid', '==', retVal.id);
-          return query;
-        }).ref.get().then(srres => {
+        this.ngFs.collection('sharestations').ref.where('shareid', '==', retVal.id).get().then(srres => {
           let stnCounter = srres.size;
           srres.forEach(doc => {
             const stnshrdata = doc.data();
-            const id = stnshrdata.stationid;
             stnshrdata.stationRef.get().then(stndoc => {
+              const id = stndoc.id;
               const stndata = stndoc.data();
               retVal.stations.push(new ShareStation({id, ...stndata}));
               stnCounter--;
@@ -151,6 +147,25 @@ export class ShareStationService {
           });
         });
       });
+    });
+  }
+  deleteShare(id: string) {
+    return new Promise((res, rej) => {
+      try {
+        this.ngFs.collection('sharestations').ref.where('shareid', '==', id).get().then(srres => {
+          let stnCounter = srres.size;
+          srres.forEach(doc => {
+            this.ngFs.doc(`/sharestations/${doc.id}`).delete();
+            stnCounter--;
+            if (stnCounter === 0) {
+              this.ngFs.doc(`/shares/${id}`).delete();
+              res('success');
+            }
+          });
+        });
+      } catch (error) {
+        rej(error);
+      }
     });
   }
   importShare(shareData: Share) {

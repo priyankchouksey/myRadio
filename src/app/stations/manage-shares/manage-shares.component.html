@@ -9,22 +9,25 @@
         </mat-panel-title>
         <!-- <mat-icon>delete</mat-icon> -->
       </mat-expansion-panel-header>
-      <mat-list #selectList *ngIf="shareData.stations && shareData.stations.length > 0">
-        <mat-list-item *ngFor="let item of shareData.stations; let lastitem = last; let isOddStn=odd" 
-          [class.odd-station]="isOddStn" [class.even-station]="!isOddStn" style="height: 50px;" >
-            <img mat-list-avatar [src] = "item.logo">
-            <span mat-line>{{item.name}}</span>
-            <p mat-line> {{item.frequency}} &bull; {{item.geo.city}}, {{item.geo.state}} </p>
-            <mat-checkbox align="end" [(ngModel)]="item.selected"></mat-checkbox>
-        </mat-list-item>
-        <mat-form-field>
-            <input matInput type="text" placeholder="Share Url" [value]="shareData.shareUrl" readonly>
-            <button mat-button *ngIf="shareData.shareUrl" matSuffix mat-icon-button aria-label="Copy" (click)="copyToClip()">
-              <mat-icon>content_copy</mat-icon>
-            </button>
-        </mat-form-field>
-      </mat-list>
-      <button mat-button color="accent" (click)="delete(shareData.id)">Next</button>
+      <mat-form-field>
+        <input #urlInput matInput type="text" placeholder="Share Url" [value]="shareData.shareUrl" readonly>
+        <button mat-button *ngIf="shareData.shareUrl" matSuffix mat-icon-button aria-label="Copy" (click)="copyToClip(urlInput)">
+          <mat-icon>content_copy</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="listcontainer">
+        <mat-list #selectList *ngIf="shareData.stations && shareData.stations.length > 0">
+          <mat-list-item *ngFor="let item of shareData.stations; let lastitem = last; let isOddStn=odd"
+            [class.odd-station]="isOddStn" [class.even-station]="!isOddStn" style="height: 50px;" >
+              <img mat-list-avatar [src] = "item.logo">
+              <span mat-line>{{item.name}}</span>
+              <p mat-line> {{item.frequency}} &bull; {{item.geo.city}}, {{item.geo.state}} </p>
+              <!-- <mat-checkbox align="end" [(ngModel)]="item.selected"></mat-checkbox> -->
+              <!-- <div class="badge" [matTooltip]="item.importCount + ' Users imported this station'">{{item.importCount}}</div> -->
+          </mat-list-item>
+        </mat-list>
+      </div>
+      <button class="delete-btn" mat-button color="primary" align="end" (click)="delete(shareData.id)"><mat-icon>delete</mat-icon>Delete Share</button>
     </mat-expansion-panel>
   </mat-accordion>
 </mat-dialog-content>

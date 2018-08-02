@@ -26,6 +26,7 @@ export class ShareDoc {
 export class ShareStation extends Station {
   selected: boolean;
   alreadyexists: boolean;
+  importCount: number;
   constructor(rawData?: any) {
     super(rawData);
     this.selected = true;

@@ -46,6 +46,9 @@ export class NavbarComponent implements OnInit {
       });
     }
     this.showDraw = false;
+    this.evtSrvc.subscribe('LOGIN_CLICKED').subscribe(() => {
+      this.iconClick();
+    });
     this.evtSrvc.subscribe('showprivacy').subscribe(() => {
       this.showDialog(PrivacyComponent);
     });

@@ -13,6 +13,8 @@ import { EventsService } from '../../core/events.service';
 import { ShareStationService } from '../share-station.service';
 import { ShareStationComponent } from '../share-station/share-station.component';
 import { ManageSharesComponent } from '../manage-shares/manage-shares.component';
+import { ShareStation } from '../../shared/station-share';
+import * as _ from 'underscore';
 
 @Component({
   selector: 'app-stations-page',
@@ -88,9 +90,11 @@ export class StationsPageComponent implements OnInit {
   }
   shareStation(station: Station) {
     // this.shrStnSrvc.add(station);
+    let shrStn: ShareStation = new ShareStation();
+    _.extend(shrStn, station);
     this.dialog.open(ShareStationComponent, {
       disableClose: true,
-      data: [station]
+      data: [shrStn]
     });
   }
   toggleAddtoShare(station: Station) {

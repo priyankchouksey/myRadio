@@ -5,4 +5,8 @@
   width: 100%;
   overflow: scroll;
   bottom: 0px;
+  -ms-overflow-style: none;
+}
+.appcontainer::-webkit-scrollbar {
+  width: 0 !important;
 }

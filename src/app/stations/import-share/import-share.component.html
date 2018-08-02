@@ -1,5 +1,12 @@
 <div *ngIf="!usrSrvc.currentUser?.loggedIn">
-  Please Login...
+    <div style="text-align:center; margin-top: 50px; width: calc(100% - 16px)">
+      <img alt="Radio" src="/assets/images/logo.png" width="300">
+      <!-- <h1>only what I like to listen.</h1> -->
+      <h2>It's good to hear that somebody care to share what they like.</h2>
+      <button mat-raised-button color="primary" (click)="loginClicked()">Login</button>
+      <h2>to see what's in the bag for you.</h2>
+    </div>
+  <app-footer></app-footer>
 </div>
 <div *ngIf="usrSrvc.currentUser?.loggedIn" class="container">
   <div class="header"><h2>{{shareData?.name}}</h2></div>
@@ -12,5 +19,5 @@
     </mat-list-item>
   </mat-list>
   <button mat-raised-button class="import-btn" (click)="cancel()">cancel</button>
-  <button mat-raised-button color="accent" class="import-btn" (click)="import()">Add to my List</button>
+  <button mat-raised-button color="accent" class="import-btn" (click)="import()" [disabled]="noneSelected()">Add to my List</button>
 </div>

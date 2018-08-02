@@ -19,9 +19,37 @@
 .even-station {
   background-color: #eceff3;
 }
+.listcontainer {
+  max-height: 170px;
+  overflow-y: scroll;
+}
 mat-list-item {
   height: 50px;
 }
 mat-form-field {
+  margin-top: 5px;
   width: 100%;
+}
+.badge {
+    position: absolute;
+    text-align: center;
+    display: inline-block;
+    border-radius: 50%;
+    transition: transform .2s ease-in-out;
+    transform: scale(.6);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    color: #fff;
+    background: #673ab7;
+    right:10px;
+    height: 35px;
+    width: 35px;
+}
+.mat-expension-panel-body {
+  padding: 0 24px 6px;
+}
+.delete-btn {
+  margin-top: 5px;
 }

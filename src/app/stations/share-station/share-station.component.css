@@ -45,10 +45,15 @@ mat-selection-list:focus {
   width: 100%;
 }
 .share-btn {
-  width: 50%;
+  width: calc(50% - 10px);
+  margin: auto 5px;
 }
 .share-input {
   width: calc(100% + 3px);
   margin: 0px -2px;
   padding: 0px;
+}
+
+mat-form-field{
+  width: 100%;
 }

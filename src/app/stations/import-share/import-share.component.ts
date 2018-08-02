@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/user.service';
 import { Share } from '../../shared/station-share';
 import { ShareStationService } from '../share-station.service';
+import { EventsService } from '../../core/events.service';
 
 @Component({
   selector: 'app-import-share',
@@ -15,7 +16,7 @@ export class ImportShareComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
     public usrSrvc: UserService,
     private shrStnSrvc: ShareStationService,
-    private zone: NgZone) { }
+    private zone: NgZone, private evtSrvc: EventsService) { }
 
   ngOnInit() {
     this.shareID = this.route.snapshot.paramMap.get('id');
@@ -34,6 +35,11 @@ export class ImportShareComponent implements OnInit {
       });
     });
   }
+  noneSelected() {
+    return this.shareData.stations.findIndex(value => {
+      return value.selected;
+    }) === -1;
+  }
   import() {
     this.shrStnSrvc.importShare(this.shareData).then(() => {
       this.router.navigate(['myStations']);
@@ -42,5 +48,8 @@ export class ImportShareComponent implements OnInit {
   }
   cancel() {
     this.router.navigate(['myStations']);
+  }
+  loginClicked() {
+    this.evtSrvc.publish('LOGIN_CLICKED');
   }
 }

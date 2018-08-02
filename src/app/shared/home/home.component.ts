@@ -17,7 +17,5 @@ export class HomeComponent implements OnInit {
     //   this.router.navigate(['myStations']);
     // }
   }
-  openDoc(type: string) {
-    this.evtSrvc.publish(type);
-  }
+
 }
