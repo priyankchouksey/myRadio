@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StationsService } from '../stations.service';
 import { Station } from '../../shared/station';
 import { PlayerService } from '../../shared/player.service';
@@ -17,7 +17,7 @@ import * as _ from 'underscore';
   templateUrl: './stations-page.component.html',
   styleUrls: ['./stations-page.component.css']
 })
-export class StationsPageComponent implements OnInit {
+export class StationsPageComponent implements OnInit, OnDestroy {
   myStations: Array<Station> = new Array<Station>();
 
   constructor(private stationSrvc: StationsService,
@@ -39,6 +39,11 @@ export class StationsPageComponent implements OnInit {
       this.dialog.open(ManageSharesComponent);
     });
     this.refreshStations();
+  }
+  ngOnDestroy(): void {
+    this.evtSrvc.unSubscribe('CREATE_STATION');
+    this.evtSrvc.unSubscribe('SHARE_STATION');
+    this.evtSrvc.unSubscribe('MANAGE_SHARE');
   }
   refreshStations() {
     this.stationSrvc.getStations().then(stations => {

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MyRadio - Guide</title>
+  <style>
+    /* Style the button that is used to open and close the collapsible content */
+    body {text-align: center}
+    li{list-style-type: none;}
+    .guide-container{
+      margin: 14px;
+      padding: 5px;
+      box-shadow: 1px 1px 5px grey;
+    }
+    .collapsible {
+      background-color: #eee;
+      color: #444;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .collapsible.active {
+      margin-bottom: 0;
+    }
+    /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+    .active, .collapsible:hover {
+      background-color: #ccc;
+    }
+    .collapsible.active:after {
+      content: "\2212";
+    }
+
+    .collapsible:after {
+        content: '\002B';
+        color: black;
+        font-weight: bold;
+        float: right;
+        margin-left: 5px;
+    }
+    /* Style the collapsible content. Note: hidden by default */
+    .content {
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      background-color: #f1f1f1;
+      margin-bottom: 5px;
+    }
+  </style>
+
+</head>
+<body class="mat-typography">
+  <img src="assets/images/logo.svg">
+  <div class="guide-container">
+    <button class="collapsible">Adding new station to your list</button>
+    <div class="content">
+      <p>myRadio does not provide any stations to the user. The user must add internet stations to this app. There are various other sites which provide broadcasts of your favorite radio station, some of them are listed below for reference.</p>
+      <ul>
+        <li>
+          <a href="https://radio-locator.com" target="_blank">radio-locator</a>
+        </li>
+        <li>
+          <a href="http://delicast.com">DeliCast</a>
+        </li>
+        <li>
+          <a href="http://radiotower.com">RadioTower</a>
+        </li>
+        <li>
+          <a href="https://www.streamingthe.net">StreamingThe.Net</a>
+        </li>
+        <li>
+          <a href="https://onlineradiofm.in">OnlineRadioFM.in</a>
+        </li>
+        <li>
+          <a href="http://www.onlineradios.in">OnlineRadio.in</a>
+        </li>
+      </ul>
+      <p>Once you have metadata (name, frequency, and media url) to a add a new station, you can follow these steps </p>
+      <p>Click on user icon to access menu and select 'Create new Station'</p>
+      <img src="assets/guide-img/main-menu.png" style="height: 600px;">
+      <p>This will open a dialog to create the station.</p>
+      <img srcset="assets/guide-img/create-stn-mo.png 600w,
+      assets/guide-img/create-stn-dt.png 800w" sizes="(max-width: 600px) 600px, 800px" src="assets/guide-img/create-stn-dt.png" style="width: 600px;">
+      <p>Click <img src="assets/guide-img/edit-pic.png" style="height: 35px;"> to open picture selector.</p>
+      <p>Paste a url of the picture from other website (preffered).</p>
+      <img src="assets/guide-img/picselect-web.png" style="height: 250px;">
+      <p>Alternative you can upload your local copy of the station logo.</p>
+      <img src="assets/guide-img/picselect-local.png" style="height: 250px;">
+      <p>Fill as much relevent information you can probide in addition to required fields, this will later help in searching and grouping stations.</p>
+      <p>Click on save to save this station. The newly created station will appear in your myStation's list.</p>
+    </div>
+    <button class="collapsible">Editing a station</button>
+    <div class="content">
+      <p>Once a station is created you can modify it. You can only modify stations created by you, stations shared to you by other user cannot be modified by you.</p>
+      <p>Click <img src="assets/guide-img/more-vert.png" style="height: 35px;"> to open context menu.</p>
+      <img src="assets/guide-img/stn-bar.png" style="height: 80px;">
+      <p>Click on 'Edit Station' menu item. This will open Edit station dialog, modify the station as required and Save.</p>
+      <img src="assets/guide-img/context-menu.png" style="height: 160px;">
+    </div>
+    <button class="collapsible">Delete a station</button>
+    <div class="content">
+      <p>You can only delete stations created by you, stations shared to you by other user cannot be modified by you.</p>
+      <p>PS: You might have shared the stations with others, deleting the your shared station will delete station for those users as well.</p>
+      <p>Click <img src="assets/guide-img/more-vert.png" style="height: 35px;"> to open context menu</p>
+      <p>Click on 'Delete Station' menu item. This will open a confirmation dialog, confirm Yes in the dialog box.</p>
+      <img src="assets/guide-img/context-menu.png" style="height: 160px;">
+    </div>
+    <button class="collapsible">Play a station</button>
+    <div class="content">
+      <p>A station can directly be played by clicking <img src="assets/guide-img/play.png" style="height: 35px;"> from the station card.</p>
+      <img src="assets/guide-img/stn-bar.png" style="height: 80px;">
+      <p>This will add the station at top of your queue and start playing that station. Adding the station to queue is temperory and will be removed when application exits.</p>
+    </div>
+    <button class="collapsible">Add/Remove station in queue</button>
+    <div class="content">
+      <p>When you click on the play button, it will add the station in queue and play it, it is a temperory add to queue which means when you refresh application you will loose that queue. To resolve this you may have to add the station in you persisted queue.</p>
+      <p>Cick on the <img src="assets/guide-img/queue-btn.png" style="height: 35px;"> icon of the station card.</p>
+      <img src="assets/guide-img/stn-bar.png" style="height: 80px;">
+      <p>The icon will get highlighted</p>
+      <img src="assets/guide-img/add-to-list.png" style="height: 80px;">
+      <p>To remove the station from queue, click the highlighted icon and it should turn to add queue icon.</p>
+      <p>All the stations added to the queue will persist and will be available next time when you login.</p>
+    </div>
+    <button class="collapsible">Play using player bar.</button>
+    <div class="content">
+      <p>Once the queue is created, either by using play button or add to queue, you will be able to navigate and play the stations using the player bar.</p>
+      <p>Click the large play/stop buton to play or stop currently playing station.</p>
+      <img src="assets/guide-img/player.png" style="height: 65px;">
+      <p>Click previous and next icons next to the play button to navigate between stations.</p>
+      <p>You can also view your current queue by clicking on <img src="assets/guide-img/show-queue.png" style="height: 35px"> icon of player bar. This will open the current queue list.</p>
+      <img src="assets/guide-img/queue.png" style="height: 500px;">
+      <p>Click any station to start playing.</p>
+    </div>
+    <button class="collapsible">Share stations</button>
+    <div class="content">
+      <p>The app does allow you to share the stations created by you with other users. You can either share a single station or multiple stations in a share.</p>
+      <p>The share menu can be accessed by clicking on <img src="assets/guide-img/more-vert.png" style="height: 35px;"> and hover over share menu.</p>
+      <img src="assets/guide-img/context-menu.png" style="height: 160px;">
+      <p>To share a single station select 'Share this staion' from the sharing menu.</p>
+      <p>To share multiple station, you click on 'Add to share list'. This will add current station to share list and you can perform these steps with as many stations you want to share. When done you should select 'Share all selected' from the same context menu.</p>
+      <p>You will be presented with a dialog box to complete sharing.</p>
+      <img src="assets/guide-img/share-start.png" style="height: 400px;">
+      <p>In the dialog provide a name for your share, you may review the stations you are sharing and remove if you want. Once done, hit on save to generate share url.</p>
+      <img src="assets/guide-img/share-done.png" style="height: 400px;">
+      <p>When save is done you can find the share URL. You also have option to send the share url via mail (it will open default mail client in you machine) or copy the url by using the buttons provided on the right of Share URL box.</p>
+    </div>
+    <button class="collapsible">Manage Shares</button>
+    <div class="content">
+      <p>At time you will get cluttered with many shares and may want to manage them.</p>
+      <p><strong>PS:</strong> Deleting the share will delete all related data and other users, who have your share url, will not be able to import it.</p>
+      <p>Open the User menu</p>
+      <img src="assets/guide-img/main-menu.png" style="height: 600px;">
+      <p>Click on 'Manage Shares', you will be presented with following dialog.</p>
+      <img src="assets/guide-img/manage-share.png" style="height: 400px;">
+      <p>You can browser through all your shares by clicking on share name.</p>
+      <p>You can click on 'Delete Share' button to delete any perticular share.</p>
+    </div>
+    <button class="collapsible">Import Shares</button>
+    <div class="content">
+      <p>You may have received a share over mail or anyother form of communication. When you open the share URL, if you are not already logged the app will ask you to login.</p>
+      <p>In logged in view you will be presented by following screen to import the share.</p>
+      <img src="assets/guide-img/import-share.png" style="height: 400px">
+      <p>In this screen you can select all or some stations that you would like to add to your list. Once made a choice click on 'Add to my list' and you will be navigated to myStations where you could see the newly imported stations.</p>
+      <p>You are good to go!!!</p>
+    </div>
+  </div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+              content.style.display = "none";
+            } else {
+              content.style.display = "block";
+            }
+          });
+        }
+      </script>
+</body>
+</html>

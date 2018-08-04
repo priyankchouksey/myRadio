@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
@@ -15,7 +15,8 @@ import { ContactComponent } from '../contact/contact.component';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
+
   @ViewChild('drawer') elRef;
   showDraw: boolean;
   showingMe: boolean;
@@ -59,7 +60,12 @@ export class NavbarComponent implements OnInit {
       this.sendMail();
     });
   }
-
+  ngOnDestroy(): void {
+    this.evtSrvc.unSubscribe('LOGIN_CLICKED');
+    this.evtSrvc.unSubscribe('showprivacy');
+    this.evtSrvc.unSubscribe('showtos');
+    this.evtSrvc.unSubscribe('contactus');
+  }
   iconClick() {
     if (this.usrSrvc.currentUser && this.usrSrvc.currentUser.loggedIn) {
       this.toggleDrawer();
@@ -88,7 +94,7 @@ export class NavbarComponent implements OnInit {
         this.evtSrvc.publish('MANAGE_SHARE', null);
         break;
       case 'showguide':
-
+        window.open(location.origin + '/guide.html', '_blank');
         break;
       case 'signout':
         this.signOut();

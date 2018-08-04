@@ -1,57 +1,65 @@
 <br>
-<section fxLayout="row" fxLayout.xs="column">
-  <mat-card *ngFor="let station of (myStations)">
-    <mat-card-content routerLink="{{station.id}}" >
-      <div class="container">
-        <img mat-card-image src="{{station.logo ? station.logo : 'assets/images/radio.svg'}}" alt="{{station.name}}">
+<div class="non-user-container" *ngIf="myStations.length === 0">
+  <img src="assets/images/logo.png">
+  <br>
+  <br>
+  <span>Seems you did not create or import any station yet. <br> <br> Check out the Guide, from user menu, on how to create or import stations.</span>
+</div>
+<div *ngIf="myStations.length > 0">
+  <section fxLayout="row" fxLayout.xs="column">
+    <mat-card *ngFor="let station of (myStations)">
+      <mat-card-content routerLink="{{station.id}}" >
+        <div class="container">
+          <img mat-card-image src="{{station.logo ? station.logo : 'assets/images/radio.svg'}}" alt="{{station.name}}">
+        </div>
+      </mat-card-content>
+      <div class="content">
+        <h2>{{station.name}}</h2>
+        <small>{{station.frequency}} &bull; {{station.geo.city}}, {{station.geo.state}}</small>
+        <mat-divider></mat-divider>
+        <mat-card-actions align="end">
+          <button mat-icon-button (click)="play(station)">
+            <mat-icon>{{station.playing ? 'stop' : 'play_arrow'}}</mat-icon>
+          </button>
+          <span class="spacer"></span>
+          <button mat-icon-button (click)="changeFav(station)">
+              <!-- <mat-icon *ngClass="{'green-icon': station.favourite, 'white-icon': !station.faourite}">playlist_add</mat-icon> -->
+              <mat-icon [color]="station.favourite ? 'accent': ''" >{{station.favourite ? 'playlist_add_check' : 'playlist_add'}}</mat-icon>
+            </button>
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="sharemenu">
+              <mat-icon>share</mat-icon>
+              <span>Sharing</span>
+            </button>
+            <button mat-menu-item *ngIf="station.createdby === this.userService.currentUser.id" (click)="modifyStation(station)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit Station</span>
+            </button>
+            <button mat-menu-item *ngIf="station.createdby === this.userService.currentUser.id" (click)="deleteStation(station)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete Station</span>
+            </button>
+          </mat-menu>
+          <mat-menu #sharemenu="matMenu">
+            <button mat-menu-item (click)="shareStation(station)">
+              <mat-icon>share</mat-icon>
+              <span>Share this station</span>
+            </button>
+            <button mat-menu-item (click)="toggleAddtoShare(station)">
+              <mat-icon>check_circle</mat-icon>
+              <span>{{station.addedtoshare ? 'Remove from': 'Add to'}} share list</span>
+            </button>
+            <button mat-menu-item (click)="shareAll()">
+              <mat-icon>send</mat-icon>
+              <span>Share all selected</span>
+            </button>
+          </mat-menu>
+        </mat-card-actions>
       </div>
-    </mat-card-content>
-    <div class="content">
-      <h2>{{station.name}}</h2>
-      <small>{{station.frequency}} &bull; {{station.geo.city}}, {{station.geo.state}}</small>
-      <mat-divider></mat-divider>
-      <mat-card-actions align="end">
-        <button mat-icon-button (click)="play(station)">
-          <mat-icon>{{station.playing ? 'stop' : 'play_arrow'}}</mat-icon>
-        </button>
-        <span class="spacer"></span>
-        <button mat-icon-button (click)="changeFav(station)">
-            <!-- <mat-icon *ngClass="{'green-icon': station.favourite, 'white-icon': !station.faourite}">playlist_add</mat-icon> -->
-            <mat-icon [color]="station.favourite ? 'accent': ''" >{{station.favourite ? 'playlist_add_check' : 'playlist_add'}}</mat-icon>
-          </button>
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item [matMenuTriggerFor]="sharemenu">
-            <mat-icon>share</mat-icon>
-            <span>Sharing</span>
-          </button>
-          <button mat-menu-item *ngIf="station.createdby === this.userService.currentUser.id" (click)="modifyStation(station)">
-            <mat-icon>edit</mat-icon>
-            <span>Edit Station</span>
-          </button>
-          <button mat-menu-item *ngIf="station.createdby === this.userService.currentUser.id" (click)="deleteStation(station)">
-            <mat-icon>delete</mat-icon>
-            <span>Delete Station</span>
-          </button>
-        </mat-menu>
-        <mat-menu #sharemenu="matMenu">
-          <button mat-menu-item (click)="shareStation(station)">
-            <mat-icon>share</mat-icon>
-            <span>Share this station</span>
-          </button>
-          <button mat-menu-item (click)="toggleAddtoShare(station)">
-            <mat-icon>check_circle</mat-icon>
-            <span>{{station.addedtoshare ? 'Remove from': 'Add to'}} share list</span>
-          </button>
-          <button mat-menu-item (click)="shareAll()">
-            <mat-icon>send</mat-icon>
-            <span>Share all selected</span>
-          </button>
-        </mat-menu>
-      </mat-card-actions>
-    </div>
-  </mat-card>
-</section>
-<app-player></app-player>
+    </mat-card>
+  </section>
+  <app-player></app-player>
+</div>

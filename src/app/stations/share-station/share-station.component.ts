@@ -56,7 +56,7 @@ export class ShareStationComponent implements OnInit, AfterViewInit {
     // this.generatedURL = 'http://dummy.url/share/32nsdekrbwek324';
   }
   ngAfterViewInit() {
-    this.selectList.selectAll();
+    // this.selectList.selectAll();
   }
   closeDialog(isClosedCliecked: boolean) {
     this.dialogRef.close(isClosedCliecked);

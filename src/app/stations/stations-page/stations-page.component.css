@@ -56,15 +56,17 @@ mat-divider {
     max-width: 100%;;
   }
 }
-.green-icon {
-  color: green;
+
+.non-user-container {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 14px;
 }
-.green-icon svg {
-  fill: green;
-}
-.white-icon {
-  color: white;
-}
-.white-icon svg {
-  fill: white;
+.non-user-container span {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+  color: darkgray;
+  font-size: large;
 }

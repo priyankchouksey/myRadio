@@ -27,6 +27,16 @@ export class EventsService {
         }
     }
 
+    public unSubscribe(event: string) {
+      if (!event) {
+        throw new Error(`[${ServiceName}] => Subscription method must get event name.`);
+      }
+
+      if (this.events[event] === undefined) {
+          return;
+      }
+      this.events[event] = undefined;
+    }
     public publish(event: string, eventObject?: any): void {
         if (!event) {
             throw new Error(`[${ServiceName}] => Publish method must get event name.`);
