@@ -2,6 +2,7 @@ import { Injectable, OnDestroy, Output } from '@angular/core';
 import { Station, PlayingInfo } from './station';
 import { Subject } from 'rxjs';
 import { EventEmitter } from 'protractor';
+import { PlayUrlParserService } from '../core/play-url-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,9 @@ export class PlayerService implements OnDestroy {
   private audioPlayer = new Audio();
   currentIndex: number;
   private isplaying = false;
-  private userStopped: boolean = true;
+  private userStopped = true;
 
-  constructor() { }
+  constructor(private playurlsvc: PlayUrlParserService) { }
   ngOnDestroy(): void {
     this.playList = null;
   }
@@ -29,15 +30,20 @@ export class PlayerService implements OnDestroy {
       this.playList[this.currentIndex].playing = false;
     }
     if (station) { this.addToList(station); } else { station = this.playList[this.currentIndex]; }
-
-    this.audioPlayer.src = station.playurl;
     this.informSubject('streamdata', 'Connecting...');
-    this.audioPlayer.play().then(data => {
-      this.playList[this.currentIndex].playing = true;
-      this.isplaying = true;
-      this.informSubject('playstatus', 'Playing...');
-      this.informSubject('streamdata', 'Now Playing...');
-    }).catch(err => {
+    this.playurlsvc.parseUrl(station.playurl).then(url => {
+      this.audioPlayer.src = url as string;
+      this.audioPlayer.play().then(data => {
+        this.playList[this.currentIndex].playing = true;
+        this.isplaying = true;
+        this.informSubject('playstatus', 'Playing...');
+        this.informSubject('streamdata', 'Now Playing...');
+      }).catch(err => {
+        this.informSubject('playstatus', 'Error playing...');
+        this.informSubject('streamdata', 'Error Playing...');
+      });
+    })
+    .catch(error => {
       this.informSubject('playstatus', 'Error playing...');
       this.informSubject('streamdata', 'Error Playing...');
     });

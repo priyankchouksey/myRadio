@@ -7,7 +7,9 @@ import { EventsService } from './events.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FooterComponent } from './footer/footer.component';
 import { MaterialModule } from '../material.module';
+import { PlayUrlParserService } from './play-url-parser.service';
 export { User } from './user';
+
 
 @NgModule({
   imports: [
@@ -15,7 +17,7 @@ export { User } from './user';
     MaterialModule
   ],
   declarations: [ConfirmationDialogComponent, FooterComponent],
-  providers: [AuthService, AuthGuardService, UserService, EventsService],
+  providers: [AuthService, AuthGuardService, UserService, EventsService, PlayUrlParserService],
   exports: [FooterComponent],
   entryComponents: [ConfirmationDialogComponent]
 })
