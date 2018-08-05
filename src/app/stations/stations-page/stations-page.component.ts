@@ -104,9 +104,11 @@ export class StationsPageComponent implements OnInit, OnDestroy {
       switch (data.button) {
         case 1:
           this.stationSrvc.removeUserStation(station, false);
+          this.refreshStations();
           break;
         case 2:
           this.stationSrvc.delete(station);
+          this.refreshStations();
           break;
         default:
           break;
