@@ -11,6 +11,8 @@ import { ShareStationComponent } from '../share-station/share-station.component'
 import { ManageSharesComponent } from '../manage-shares/manage-shares.component';
 import { ShareStation } from '../../shared/station-share';
 import * as _ from 'underscore';
+import { ConfirmationDialogComponent } from '../../core/confirmation-dialog/confirmation-dialog.component';
+
 
 @Component({
   selector: 'app-stations-page',
@@ -87,7 +89,29 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     });
   }
   deleteStation(station: Station) {
-    this.stationSrvc.delete(station.id);
+    const dlg = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
+      data: {title: 'Delete Station!',
+        // tslint:disable-next-line:max-line-length
+        content: 'Deleting this station will cause delete from all your (or other users\'s) shares as well as from other user\'s sapce. Instead you can just remove from your space.<br><br>Click Remove to remove from your space only.',
+        buttons: [ {id: 1, title: 'Remove', color: null},
+        { id: 2, title: 'Delete', color: null},
+        { id: 3, title: 'Cancel', color: 'accent'}]
+      }
+    });
+
+    dlg.afterClosed().subscribe(data => {
+      switch (data.button) {
+        case 1:
+          this.stationSrvc.removeUserStation(station, false);
+          break;
+        case 2:
+          this.stationSrvc.delete(station);
+          break;
+        default:
+          break;
+      }
+    });
   }
   shareStation(station: Station) {
     // this.shrStnSrvc.add(station);

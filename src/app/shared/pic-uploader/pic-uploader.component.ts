@@ -43,7 +43,7 @@ export class PicUploaderComponent implements OnInit {
    }
 
   ngOnInit() {
-    if (this.defaultBackgound) {
+    if (!this.imgSrc && this.defaultBackgound) {
       document.getElementById('imagePreview').style['background-image'] = 'url(' + this.defaultBackgound + ')';
       this.imageSourceChange.emit(this.imgSrc);
     }
@@ -58,8 +58,8 @@ export class PicUploaderComponent implements OnInit {
     });
   }
   saveImage(filename: string) {
-    return Promise((res, rej) => {
-      if (this.dataToSave.imageType === 'FILE') {
+    return Promise<string>((res, rej) => {
+      if (this.dataToSave && this.dataToSave.imageType === 'FILE') {
         try {
           const path = this.usrSrvc.currentUser.id + '/' + filename + '.logo';
           const fileRef = this.storage.ref(path);
@@ -78,7 +78,7 @@ export class PicUploaderComponent implements OnInit {
         rej('Error Uploading file...');
       }
     } else {
-      res(this.imageSource);
+      res( !this.imageSource || this.imageSource === this.defaultBackgound ? null : this.imageSource);
     }
     });
   }

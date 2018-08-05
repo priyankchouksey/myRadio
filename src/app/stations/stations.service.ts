@@ -80,13 +80,13 @@ export class StationsService {
     const statData: any = {
       name: data.name,
       frequency: data.frequency,
-      city: data.geo.city,
-      state: data.geo.state,
-      county: data.geo.country,
+      city: data.geo.city ? data.geo.city : '' ,
+      state: data.geo.state ? data.geo.state : '',
+      county: data.geo.country ? data.geo.country : '',
       playurl: data.playurl,
       logo: data.logo,
-      assistantkeyword: data.assistKeyword,
-      website: data.website,
+      assistantkeyword: data.assistKeyword ? data.assistKeyword : '',
+      website: data.website ? data.website : '',
       createdate: data.createdate,
       createdby: data.createdby,
       active: true
@@ -110,18 +110,68 @@ export class StationsService {
     });
    }
 
-   delete(id: string) {
-    return this.getStation(id).delete();
-   }
+  removeUserStation(station: Station, allUsers: boolean) {
+    if (allUsers) {
+      return new Promise<void>((resolve, reject) => {
+        const ref = this.getStation(station.id).ref;
+        this.ngFs.collection('userstations').ref.where('stationRef', '==', ref).get().then(res => {
+          let recCount = res.size;
+          res.forEach(doc => {
+            doc.ref.delete();
+            recCount--;
+            if (recCount === 0) {
+              resolve();
+            }
+          });
+        });
+      });
+    } else {
+      return this.getUserStation(station.userstatioid).delete();
+    }
+  }
+  removeFromShare(station: Station, shareId?: string) {
+    return new Promise<void>((resolve, reject) => {
+      const ref = this.getStation(station.id).ref;
+      this.ngFs.collection('sharestations').ref.where('stationRef', '==', ref).get().then(res => {
+        let stnCount = res.size;
+        res.forEach(doc => {
+          const ssData: any = doc.data();
+          if (shareId && ssData.shareId === shareId ) {
+            doc.ref.delete();
+          } else if (!shareId) {
+            doc.ref.delete();
+          }
+          stnCount--;
+          if (stnCount === 0) {
+            resolve();
+          }
+        });
+      })
+      .catch(() => {
+        reject();
+      });
+    });
+  }
+  delete(station: Station) {
+    return new Promise<void>((resolve, reject) => {
+      this.removeUserStation(station, true).then((val) => {
+        this.removeFromShare(station).then(() => {
+          this.getStation(station.id).delete().then(() => resolve()).catch(() => reject());
+        })
+        .catch(() => reject());
+      })
+      .catch(() => reject());
+    });
+  }
 
-   update(data: Station) {
-     const statData: any = {
-       name: data.name,
-       frequency: data.frequency,
-       playurl: data.playurl,
-      };
-    return this.getStation(data.id).update(statData);
-   }
+  update(data: Station) {
+    const statData: any = {
+      name: data.name,
+      frequency: data.frequency,
+      playurl: data.playurl,
+    };
+  return this.getStation(data.id).update(statData);
+  }
    getNewID() {
      return this.ngFs.createId();
    }

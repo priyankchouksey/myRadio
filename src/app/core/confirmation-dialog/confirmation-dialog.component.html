@@ -3,6 +3,11 @@
   <div class="content" [innerHTML]="data.content"></div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-raised-button color="primary" (click)="closeDialog(true)">Ok</button>
-  <button mat-raised-button (click)="closeDialog(false)">Cancel</button>
+  <div *ngIf="!data.buttons">
+    <button mat-raised-button color="primary" (click)="closeDialog(true)">Ok</button>
+    <button mat-raised-button (click)="closeDialog(false)">Cancel</button>
+  </div>
+  <div *ngIf="data.buttons">
+      <button class="multi-btn" *ngFor="let button of data.buttons;" mat-raised-button [color]="button.color" (click)="btnClick(button.id)">{{button.title}}</button>
+  </div>
 </mat-dialog-actions>

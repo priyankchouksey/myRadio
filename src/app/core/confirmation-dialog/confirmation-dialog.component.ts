@@ -15,4 +15,8 @@ export class ConfirmationDialogComponent implements OnInit {
   closeDialog(value: boolean) {
     this.dialogRef.close(value);
   }
+  btnClick(id: any) {
+    const retValue = {button: id};
+    this.dialogRef.close(retValue);
+  }
 }

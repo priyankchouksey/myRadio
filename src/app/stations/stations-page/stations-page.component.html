@@ -8,7 +8,7 @@
 <div *ngIf="myStations.length > 0">
   <section fxLayout="row" fxLayout.xs="column">
     <mat-card *ngFor="let station of (myStations)">
-      <mat-card-content routerLink="{{station.id}}" >
+      <mat-card-content>
         <div class="container">
           <img mat-card-image src="{{station.logo ? station.logo : 'assets/images/radio.svg'}}" alt="{{station.name}}">
         </div>

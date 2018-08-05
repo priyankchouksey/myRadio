@@ -29,6 +29,8 @@ export class Station {
       this.playurl = rawData.playurl;
       this.playing = rawData.isplaying;
       this.favourite = rawData.favourite;
+      this.assistKeyword = rawData.assistantkeyword;
+      this.website = rawData.website;
     }
   }
 }

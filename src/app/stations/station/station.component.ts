@@ -49,7 +49,7 @@ export class StationComponent implements OnInit {
     } else {
       // Create New record
       picUploader.saveImage(this.stationSrvc.getNewID()).then(value => {
-        this.station.logo = String(value);
+        this.station.logo = value;
         this.station.createdate = new Date(Date.now());
         this.station.createdby = this.usrSrvc.currentUser.id;
         this.stationSrvc.create(this.station).then(() => {
