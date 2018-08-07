@@ -8,6 +8,7 @@ section {
   max-width: 90%;
   text-align: left;
   align-content: flex-start;
+  -webkit-overflow-scrolling: touch;
 }
 mat-card {
   max-width: 250px;
@@ -69,4 +70,13 @@ mat-divider {
   line-height: normal;
   color: darkgray;
   font-size: large;
+}
+.search-title {
+  background-color: lavender;
+  width: 100%;
+  text-align: right;
+  margin-top: -20px;
+}
+.pad-search {
+  padding-top: 10px;
 }

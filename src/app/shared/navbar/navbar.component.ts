@@ -18,20 +18,39 @@ import { ContactComponent } from '../contact/contact.component';
 export class NavbarComponent implements OnInit, OnDestroy {
 
   @ViewChild('drawer') elRef;
+  @ViewChild('searchBar') elSearchbarRef;
   showDraw: boolean;
+  showSearch: boolean;
   showingMe: boolean;
   authUser: User;
   loginDialog: MatDialogRef<LoginComponent>;
+  searchValue: string;
   @HostListener('document:click', ['$event', '$event.target'])
   onClick(event: MouseEvent, targetElement: HTMLElement): void {
     if (this.showingMe) { return; }
-      if (!targetElement || !this.elRef) {
+      if (!targetElement || !this.elRef || !this.elSearchbarRef) {
           return;
       }
-      const clickedInside = this.elRef.nativeElement.contains(targetElement);
-      if (!clickedInside) {
+      if (this.showDraw) {
+        const clickedInside = this.elRef.nativeElement.contains(targetElement);
+        if (!clickedInside) {
           this.showDraw = false;
+        }
+      } else if (this.showSearch) {
+        const clickedInside = this.elSearchbarRef.nativeElement.contains(targetElement);
+        if (!clickedInside) {
+          this.showSearch = false;
+        }
       }
+  }
+  @HostListener('document:keyup', ['$event', '$event.target'])
+  handleKeyboardEvent(event: KeyboardEvent, targetElement: HTMLElement) {
+    if (!this.showSearch) {return; }
+    if (event.keyCode === 27) { // Esc key
+      this.onClearSearch();
+    } else if (event.keyCode === 13) { // Return key
+      this.onSearch();
+    }
   }
   constructor(private auth: AuthService,
     public usrSrvc: UserService,
@@ -112,6 +131,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     this.showDraw = false;
   }
+  onClearSearch() {
+    this.searchValue = null;
+    this.onSearch();
+  }
+  onSearch() {
+    this.evtSrvc.publish('SEARCH', this.searchValue);
+    this.showSearch = false;
+    console.log(this.searchValue);
+  }
   private showDialog(component: any) {
     this.dialog.open(component, {
       autoFocus: false,
@@ -122,6 +150,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private toggleDrawer () {
     this.showDraw = !this.showDraw;
     if (this.showDraw) {
+      this.showingMe = true;
+      // add interval so show click does not trigger hostlisner close;
+      setInterval(() => {
+        this.showingMe = false;
+      }, 100);
+    }
+  }
+  private toggleSearch () {
+    this.showSearch = !this.showSearch;
+    if (this.showSearch) {
       this.showingMe = true;
       // add interval so show click does not trigger hostlisner close;
       setInterval(() => {

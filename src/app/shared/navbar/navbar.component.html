@@ -2,11 +2,25 @@
   <mat-toolbar-row>
     <span>myRadio</span>
     <span class="spacer"></span>
+    <button *ngIf="usrSrvc.currentUser?.loggedIn" mat-icon-button aria-label="Search" (click)="toggleSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
     <button mat-icon-button (click)="iconClick()">
       <img style="height: 34px; width: 34px; border-radius: 50%" [src]="usrSrvc.currentUser ? usrSrvc.currentUser.userIcon : '../../../assets/images/user-icon.png'">
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
+<div #searchBar class="search" *ngIf="showSearch">
+    <mat-form-field class="form-field">
+        <input #searchInput matInput type="text" style="color: white" placeholder="Search Text" [(ngModel)]="searchValue" autofocus>
+        <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="onClearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-button matSuffix mat-icon-button aria-label="Search" (click)="onSearch()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+</div>
 <!-- <app-drawer-menu [(show)]="showDraw" (optionClicked)="onOptionClick($event)"></app-drawer-menu> -->
 <div #drawer class="drawer" [hidden]="!showDraw" *ngIf="usrSrvc.currentUser" >
   <div class="draw-header">

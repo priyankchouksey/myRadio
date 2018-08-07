@@ -5,9 +5,12 @@
   <br>
   <span>Seems you did not create or import any station yet. <br> <br> Check out the Guide, from user menu, on how to create or import stations.</span>
 </div>
-<div *ngIf="myStations.length > 0">
+<div class="search-title" *ngIf="showFilterLabel">Showing stations with '{{searchText}}' in them.
+  <button mat-icon-button (click)="clearSearch()"><mat-icon aria-label="Close search">close</mat-icon></button>
+</div>
+<div *ngIf="myStations.length > 0" [ngClass]="{'pad-search' : showFilterLabel}">
   <section fxLayout="row" fxLayout.xs="column">
-    <mat-card *ngFor="let station of (myStations)">
+    <mat-card *ngFor="let station of (myStations | search: searchText)">
       <mat-card-content>
         <div class="container">
           <img mat-card-image src="{{station.logo ? station.logo : 'assets/images/radio.svg'}}" alt="{{station.name}}">

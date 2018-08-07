@@ -21,6 +21,8 @@ import { ConfirmationDialogComponent } from '../../core/confirmation-dialog/conf
 })
 export class StationsPageComponent implements OnInit, OnDestroy {
   myStations: Array<Station> = new Array<Station>();
+  showFilterLabel = false;
+  searchText: string;
 
   constructor(private stationSrvc: StationsService,
     public userService: UserService,
@@ -40,12 +42,16 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     this.evtSrvc.subscribe('MANAGE_SHARE').subscribe(value => {
       this.dialog.open(ManageSharesComponent);
     });
+    this.evtSrvc.subscribe('SEARCH').subscribe(value => {
+      this.doFilter(value);
+    });
     this.refreshStations();
   }
   ngOnDestroy(): void {
     this.evtSrvc.unSubscribe('CREATE_STATION');
     this.evtSrvc.unSubscribe('SHARE_STATION');
     this.evtSrvc.unSubscribe('MANAGE_SHARE');
+    this.evtSrvc.unSubscribe('SEARCH');
   }
   refreshStations() {
     this.stationSrvc.getStations().then(stations => {
@@ -55,6 +61,7 @@ export class StationsPageComponent implements OnInit, OnDestroy {
           this.playerSrvc.addToList(stn);
         }
       });
+      this.showFilterLabel = false;
     });
   }
   play(station: Station) {
@@ -136,5 +143,18 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     this.dialog.open(ShareStationComponent, {
       disableClose: true
     });
+  }
+  doFilter(value: string) {
+    if (value) {
+      this.searchText = value;
+      this.showFilterLabel = true;
+    } else {
+      this.searchText = null;
+      this.showFilterLabel = false;
+    }
+  }
+  clearSearch() {
+    this.searchText = null;
+    this.showFilterLabel = false;
   }
 }

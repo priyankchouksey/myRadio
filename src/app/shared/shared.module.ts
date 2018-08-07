@@ -18,7 +18,6 @@ import { PicSelectorComponent } from './pic-uploader/pic-selector.component';
 import { SaperatorLabelComponent } from './saperator-label/saperator-label.component';
 import { FileDropDirective } from './pic-uploader/file-drop.directive';
 import { ContactComponent } from './contact/contact.component';
-// import { Station } from './station';
 
 export { Station } from './station';
 export { Share } from './station-share';
@@ -55,4 +54,11 @@ const routes: Routes = [
     PrivacyComponent, TosComponent, PicSelectorComponent, SaperatorLabelComponent, FileDropDirective, ContactComponent],
     entryComponents: [LoginComponent, PrivacyComponent, TosComponent, PicSelectorComponent, ContactComponent]
 })
-export class SharedModule { }
+export class SharedModule {
+  static forRoot() {
+    return {
+        ngModule: SharedModule,
+        providers: [],
+    };
+ }
+}

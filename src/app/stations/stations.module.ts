@@ -12,6 +12,7 @@ import { ShareStationComponent } from './share-station/share-station.component';
 import { ShareStationService } from './share-station.service';
 import { ImportShareComponent } from './import-share/import-share.component';
 import { ManageSharesComponent } from './manage-shares/manage-shares.component';
+import { PipesModule } from '../pipes/pipes.module';
 
 const routes: Routes = [
   { path: 'myStations', component: StationsPageComponent, resolve: {data: StationResolver}},
@@ -19,7 +20,7 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [
-    SharedModule, RouterModule.forChild(routes)
+    SharedModule.forRoot(), RouterModule.forChild(routes), PipesModule
   ],
   exports: [StationComponent, StationsPageComponent],
   declarations: [StationsPageComponent,
