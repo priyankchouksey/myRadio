@@ -1,12 +1,17 @@
 .appcontainer{
   max-height: calc(100% - 56px);
-  top: 56px;
+  top: 65px;
   position: fixed;
   width: 100%;
   overflow: scroll;
-  bottom: 0px;
+  padding-bottom: 40px;
   -ms-overflow-style: none;
 }
 .appcontainer::-webkit-scrollbar {
   width: 0 !important;
+}
+@media(max-width: 599px) {
+  .appcontainer{
+    top : 56px;
+  }
 }

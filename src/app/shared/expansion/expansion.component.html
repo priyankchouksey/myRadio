@@ -1,0 +1,4 @@
+<div>
+  <button class="group-header" (click)="onClick()" [ngClass]="{'group-header-collapsed' : !expanded}" *ngIf="!hidetitle">{{title}}</button>
+  <ng-content *ngIf="expanded"></ng-content>
+</div>

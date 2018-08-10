@@ -3,3 +3,9 @@ body{
   margin: 0;
   font-family: 'Roboto',arial,'Noto Sans Japanese',sans-serif;
 }
+* {
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  width: 0 !important;
+}

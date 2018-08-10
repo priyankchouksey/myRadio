@@ -18,6 +18,7 @@ import { PicSelectorComponent } from './pic-uploader/pic-selector.component';
 import { SaperatorLabelComponent } from './saperator-label/saperator-label.component';
 import { FileDropDirective } from './pic-uploader/file-drop.directive';
 import { ContactComponent } from './contact/contact.component';
+import { ExpansionComponent } from './expansion/expansion.component';
 
 export { Station } from './station';
 export { Share } from './station-share';
@@ -47,11 +48,12 @@ const routes: Routes = [
     RouterModule,
     FormsModule,
     CoreModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ExpansionComponent
   ],
   declarations: [NavbarComponent, PicUploaderComponent, HomeComponent,
     PlayerComponent, SectionHeaderComponent, LoginComponent, DrawerMenuComponent,
-    PrivacyComponent, TosComponent, PicSelectorComponent, SaperatorLabelComponent, FileDropDirective, ContactComponent],
+    PrivacyComponent, TosComponent, PicSelectorComponent, SaperatorLabelComponent, FileDropDirective, ContactComponent, ExpansionComponent],
     entryComponents: [LoginComponent, PrivacyComponent, TosComponent, PicSelectorComponent, ContactComponent]
 })
 export class SharedModule {

@@ -11,7 +11,7 @@ export class PlayerService implements OnDestroy {
   playStatus: Subject<any> = new Subject<any>();
   playList: Array<Station> = new Array<Station>();
   private audioPlayer = new Audio();
-  currentIndex: number;
+  currentIndex = -1;
   private isplaying = false;
   private userStopped = true;
 
@@ -80,29 +80,36 @@ export class PlayerService implements OnDestroy {
     return this.isplaying;
   }
   get canGoNext(): boolean {
+    console.log('canGoNext: ' + (this.currentIndex + 1 !== this.playList.length));
     return this.currentIndex + 1 !== this.playList.length;
   }
   get canGoPrevious(): boolean {
-    return this.currentIndex !== 0;
+    console.log('canGoPrevious' + (this.currentIndex > 0));
+    return this.currentIndex > 0;
+  }
+  get canPlay(): boolean {
+    console.log('canPlay' + (this.playList[this.currentIndex] !== undefined));
+    return this.playList[this.currentIndex] !== undefined;
   }
   addToList(station: Station) {
-    let found = this.playList.findIndex(item => item.id === station.id);
-    if (found < 0) {
+    let index = this.playList.findIndex(item => item.id === station.id);
+    if (index < 0) {
       this.playList.unshift(station);
-      found = 0;
+      index = 0;
     }
-    if (this.playList.length > 0) {
-      this.currentIndex = 0;
-    }
+    this.currentIndex = index;
     this.informSubject('listupdate', '');
-    return found;
+    return index;
   }
   removeFromList(station: Station) {
     const index = this.playList.findIndex(item => item.id === station.id);
     if (index >= 0) {
+      if (index === this.currentIndex) { // Station is currently being played
+        this.stop();
+      }
       this.playList.splice(index, 1);
-      if (this.currentIndex > this.playList.length + 1) {
-        this.currentIndex = this.playList.length > 0 ? 0 : undefined;
+      if (this.currentIndex > this.playList.length - 1) {
+        this.currentIndex = this.playList.length > 0 ? (this.playList.length - 1) : -1;
       }
       this.informSubject('listupdate', '');
     }

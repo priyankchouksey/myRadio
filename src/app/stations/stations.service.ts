@@ -82,7 +82,7 @@ export class StationsService {
       frequency: data.frequency,
       city: data.geo.city ? data.geo.city : '' ,
       state: data.geo.state ? data.geo.state : '',
-      county: data.geo.country ? data.geo.country : '',
+      country: data.geo.country ? data.geo.country : '',
       playurl: data.playurl,
       logo: data.logo,
       assistantkeyword: data.assistKeyword ? data.assistKeyword : '',
@@ -168,9 +168,14 @@ export class StationsService {
     const statData: any = {
       name: data.name,
       frequency: data.frequency,
+      assistantkeyword: data.assistKeyword,
       playurl: data.playurl,
+      state: data.geo.state,
+      city: data.geo.city,
+      logo: data.logo,
+      country: data.geo.country
     };
-  return this.getStation(data.id).update(statData);
+    return this.getStation(data.id).update(statData);
   }
    getNewID() {
      return this.ngFs.createId();

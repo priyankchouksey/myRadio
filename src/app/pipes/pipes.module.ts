@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchPipe } from './search.pipe';
+import { GroupbyPipe } from './groupby.pipe';
 
 export * from './search.pipe';
 
@@ -8,7 +9,7 @@ export * from './search.pipe';
   imports: [
     CommonModule
   ],
-  declarations: [SearchPipe],
-  exports: [SearchPipe]
+  declarations: [SearchPipe, GroupbyPipe],
+  exports: [SearchPipe, GroupbyPipe]
 })
 export class PipesModule { }

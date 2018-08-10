@@ -80,7 +80,7 @@ mat-list-item:hover {
 }
 .search {
   position: fixed;
-  overflow: scroll;
+  /* overflow: scroll; */
   border: 1px solid gray;
   width: 500px;
   height: 45px;

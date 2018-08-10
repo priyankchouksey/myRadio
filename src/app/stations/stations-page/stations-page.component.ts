@@ -13,7 +13,6 @@ import { ShareStation } from '../../shared/station-share';
 import * as _ from 'underscore';
 import { ConfirmationDialogComponent } from '../../core/confirmation-dialog/confirmation-dialog.component';
 
-
 @Component({
   selector: 'app-stations-page',
   templateUrl: './stations-page.component.html',
@@ -23,13 +22,14 @@ export class StationsPageComponent implements OnInit, OnDestroy {
   myStations: Array<Station> = new Array<Station>();
   showFilterLabel = false;
   searchText: string;
-
+  groupByText: string;
   constructor(private stationSrvc: StationsService,
     public userService: UserService,
     private playerSrvc: PlayerService,
     private dialog: MatDialog,
     private evtSrvc: EventsService,
     private shrStnSrvc: ShareStationService) {
+      this.groupByText = 'none';
   }
 
   ngOnInit() {
@@ -157,4 +157,5 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     this.searchText = null;
     this.showFilterLabel = false;
   }
+
 }

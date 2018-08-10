@@ -1,0 +1,29 @@
+.group-header {
+  background-color: lightgrey;
+  height: 35px;
+  font-size: initial;
+  line-height: 35px;
+  padding-left: 10px;
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+}
+.group-header:after {
+  content: '\2212';
+  color: black;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+.group-header-collapsed:after{
+  content: "\002B";
+}
+.exp-content {
+  /* max-height: 0; */
+  overflow: hidden;
+  transition: height 0.2s ease-out;
+}
