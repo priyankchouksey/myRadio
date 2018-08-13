@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>User Prefrences</h1>
+<mat-dialog-content>
+  <form [formGroup]="settings">
+    <mat-checkbox formControlName="playlastplayed">Auto play last station on start.</mat-checkbox>
+    <mat-form-field>
+      <mat-select placeholder="Group Stations?" formControlName="groupby">
+        <mat-option *ngFor="let item of groupOptions" [value]="item.value">{{item.title}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" (click)="closeDialog(true)">Save</button>
+  <button mat-raised-button (click)="closeDialog(false)">Cancel</button>
+</mat-dialog-actions>

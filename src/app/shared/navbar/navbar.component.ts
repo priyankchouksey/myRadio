@@ -9,6 +9,7 @@ import { EventsService } from '../../core/events.service';
 import { PrivacyComponent } from '../privacy/privacy.component';
 import { TosComponent } from '../tos/tos.component';
 import { ContactComponent } from '../contact/contact.component';
+import { PreferencesComponent } from '../../core/preferences/preferences.component';
 
 @Component({
   selector: 'app-navbar',
@@ -111,6 +112,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
         break;
       case 'manageshare':
         this.evtSrvc.publish('MANAGE_SHARE', null);
+        break;
+      case 'preferences':
+        this.showDialog(PreferencesComponent);
         break;
       case 'showguide':
         window.open(location.origin + '/guide.html', '_blank');

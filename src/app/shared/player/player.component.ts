@@ -35,12 +35,14 @@ export class PlayerComponent implements OnInit {
       switch (res.changeType) {
         case 'playstatus':
           this.currentStation = this.playerSrvc.playList[this.playerSrvc.currentIndex];
+          this.playinInfo = '';
           break;
         case 'streamdata':
           this.playinInfo = res.data;
           break;
         case 'listupdate':
           this.currentStation = this.playerSrvc.playList[this.playerSrvc.currentIndex];
+          this.playinInfo = '';
         break;
       }
     });

@@ -80,15 +80,15 @@ export class PlayerService implements OnDestroy {
     return this.isplaying;
   }
   get canGoNext(): boolean {
-    console.log('canGoNext: ' + (this.currentIndex + 1 !== this.playList.length));
+//     console.log('canGoNext: ' + (this.currentIndex + 1 !== this.playList.length));
     return this.currentIndex + 1 !== this.playList.length;
   }
   get canGoPrevious(): boolean {
-    console.log('canGoPrevious' + (this.currentIndex > 0));
+//     console.log('canGoPrevious' + (this.currentIndex > 0));
     return this.currentIndex > 0;
   }
   get canPlay(): boolean {
-    console.log('canPlay' + (this.playList[this.currentIndex] !== undefined));
+//     console.log('canPlay' + (this.playList[this.currentIndex] !== undefined));
     return this.playList[this.currentIndex] !== undefined;
   }
   addToList(station: Station) {

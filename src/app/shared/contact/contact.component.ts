@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '../../../../node_modules/@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Option } from '../../core/core.module';
 
-export interface Reasons {
-  title: string;
-  value: string;
-}
+// export interface Reasons {
+//   title: string;
+//   value: string;
+// }
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
@@ -12,7 +13,7 @@ export interface Reasons {
 })
 export class ContactComponent implements OnInit {
   formData: FormGroup;
-  reasons: Reasons[] = [
+  reasons: Option[] = [
     {title: 'Feedback', value: 'feedback'},
     {title: 'Found an Issue', value: 'bug'},
     {title: 'I have a suggestion', value: 'suggestion'},

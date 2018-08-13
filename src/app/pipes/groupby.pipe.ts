@@ -40,7 +40,11 @@ export class GroupbyPipe implements PipeTransform {
       case 'country':
         retVal = station.geo.country ? station.geo.country.toUpperCase() : '';
         break;
+      default:
+        retVal = 'none';
+        break;
     }
+    retVal = retVal !== '' ? retVal : 'Others';
     return retVal;
   }
   toTitleCase(str) {

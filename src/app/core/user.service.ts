@@ -1,14 +1,19 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import * as firebase from 'firebase';
-import { User, Provider } from './user';
-
+import { User, Provider, UserPrefrences } from './user';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   currentuser: User;
+  userPref: UserPrefrences;
   loginStatusChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  userPrefChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  constructor(private ngFs: AngularFirestore) {
+
+  }
   public set currentUser(value: User) {
     this.currentuser = value;
   }
@@ -28,13 +33,44 @@ export class UserService {
               userdata.email, userdata.photoURL, userdata.providerData[0].providerId);
               _self.currentuser = user;
               _self.loginStatusChange.emit(true);
-            resolve(user);
-          }
+              _self.getUserPrefDoc().ref.get().then(res => {
+                const perfID = res.id;
+                const perfData = res.data();
+                _self.currentuser.userPreferences = new UserPrefrences({id: perfID, ...perfData});
+                resolve(user);
+              });
+            }
         } else {
           reject('No user logged in');
         }
       });
     });
   }
-  constructor() { }
+
+  saveUserPref(data: any) {
+    const perfData: any = {};
+    const changed: string[] = new Array<string>();
+    if (data.autoplay) {
+      perfData.playlastplayed = data.playlastplayed;
+      changed.push('playlastplayed');
+    }
+    if (data.groupby) {
+      perfData.groupby = data.groupby;
+      changed.push('groupby');
+    }
+    if (data.laststation) {
+      perfData.laststation = data.laststation;
+      changed.push('lastplayed');
+    }
+    this.ngFs.collection('usersettings').doc(this.currentuser.id).set(perfData).then(() => {
+      this.currentuser.userPreferences.playlastplayed = data.autoplay;
+      this.currentuser.userPreferences.groupby = data.groupby;
+      this.currentuser.userPreferences.laststation = data.laststation;
+      this.userPrefChange.emit(changed);
+
+    });
+  }
+  private getUserPrefDoc() {
+    return this.ngFs.doc<UserPrefrences>(`usersettings/${this.currentuser.id}`);
+  }
 }

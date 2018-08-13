@@ -9,6 +9,7 @@ export class User {
   provider: Provider;
   providerName: string;
   providerUrl: string;
+  userPreferences: UserPrefrences;
 
   constructor(id?: string, loggedIn?: boolean, name?: string, firstName?: string, lastName?: string,
     email?: string, userIcon?: string, provider?: string) {
@@ -83,7 +84,18 @@ export class User {
     return retVal;
   }
 }
-
+export class UserPrefrences {
+  id?: string;
+  playlastplayed: boolean;
+  laststation: string;
+  groupby: string;
+  constructor(data) {
+    this.id = data.id;
+    this.playlastplayed = data.playlastplayed ? data.playlastplayed : false;
+    this.groupby = data.groupby ? data.groupby : 'none';
+    this.laststation = data.laststation ? data.laststation : undefined;
+  }
+}
 export enum Provider {
   GOOGLE,
   FACEBOOK,

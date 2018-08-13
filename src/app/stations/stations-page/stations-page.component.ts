@@ -46,6 +46,11 @@ export class StationsPageComponent implements OnInit, OnDestroy {
       this.doFilter(value);
     });
     this.refreshStations();
+    this.userService.userPrefChange.subscribe(changes => {
+      if (changes.indexOf('groupby') >= 0) {
+        this.groupByText = this.userService.currentuser.userPreferences.groupby;
+      }
+    });
   }
   ngOnDestroy(): void {
     this.evtSrvc.unSubscribe('CREATE_STATION');
@@ -54,6 +59,7 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     this.evtSrvc.unSubscribe('SEARCH');
   }
   refreshStations() {
+    this.groupByText = this.userService.currentUser.userPreferences.groupby ? this.userService.currentUser.userPreferences.groupby : 'none';
     this.stationSrvc.getStations().then(stations => {
       this.myStations = stations as Array<Station>;
       this.myStations.forEach(stn => {
