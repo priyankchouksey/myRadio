@@ -87,62 +87,71 @@ export class ShareStationService {
   getShares() {
     return new Promise((resolve, reject) => {
       try {
-        const retVal: Array<Share> = new Array<Share>();
-        this.shareCollection.ref.where('userid', '==', this.usrSrvc.currentUser.id).get().then(res => {
-          let shareCount = res.size;
-          res.forEach(shareDoc => {
-            const shrid = shareDoc.id;
-            const shrdata: any = shareDoc.data();
-            const retData: Share = new Share({id: shrid, ...shrdata});
-            this.shareStationCollection.ref.where('shareid', '==', shrid).get().then(shrstncol => {
-              let stationCount = shrstncol.size;
-              shrstncol.forEach(shrstnDoc => {
-                const shrstndata = shrstnDoc.data();
-                if (shrstndata.stationRef) {
-                  shrstndata.stationRef.get().then(stndoc => {
-                    const stnid = stndoc.id;
-                    const stndata = stndoc.data();
-                    retData.stations.push(new ShareStation({stnid, ...stndata}));
-                    stationCount--;
-                    if (stationCount === 0) {
-                      retVal.push(retData);
-                      shareCount--;
-                      if (shareCount === 0) {
-                        resolve(retVal);
+          const retVal: Array<Share> = new Array<Share>();
+          this.shareCollection.ref.where('userid', '==', this.usrSrvc.currentUser.id).get().then(res => {
+            let shareCount = res.size;
+            res.forEach(shareDoc => {
+              const shrid = shareDoc.id;
+              const shrdata: any = shareDoc.data();
+              const retData: Share = new Share({id: shrid, ...shrdata});
+              this.shareStationCollection.ref.where('shareid', '==', shrid).get().then(shrstncol => {
+                let stationCount = shrstncol.size;
+                shrstncol.forEach(shrstnDoc => {
+                  const shrstndata = shrstnDoc.data();
+                  if (shrstndata.stationRef) {
+                    shrstndata.stationRef.get().then(stndoc => {
+                      const stnid = stndoc.id;
+                      const stndata = stndoc.data();
+                      const newStation = new ShareStation({stnid, ...stndata});
+                      retData.stations.push(newStation);
+                      stationCount--;
+                      if (stationCount === 0) {
+                        retVal.push(retData);
+                        shareCount--;
+                        if (shareCount === 0) {
+                          resolve(retVal);
+                        }
                       }
-                    }
-                  });
-                }
+                    });
+                  }
+                });
               });
             });
           });
-        });
       } catch (error) {
         reject(error);
       }
     });
   }
+
   getShare(shareID: string): Promise<Share> {
     console.log('reading shares');
 
     return new Promise((resolve, reject) => {
-      this.ngFs.doc<ShareDoc>(`/shares/${shareID}`).ref.get().then(res => {
-        const retVal: Share = new Share();
-        const sdata: any = res.data();
-        retVal.id = res.id;
-        retVal.name = sdata.name;
-        this.ngFs.collection('sharestations').ref.where('shareid', '==', retVal.id).get().then(srres => {
-          let stnCounter = srres.size;
-          srres.forEach(doc => {
-            const stnshrdata = doc.data();
-            stnshrdata.stationRef.get().then(stndoc => {
-              const id = stndoc.id;
-              const stndata = stndoc.data();
-              retVal.stations.push(new ShareStation({id, ...stndata}));
-              stnCounter--;
-              if (stnCounter === 0) {
-                resolve(retVal);
-              }
+      this.getMyStationsList().then(existingStations => {
+        this.ngFs.doc<ShareDoc>(`/shares/${shareID}`).ref.get().then(res => {
+          const retVal: Share = new Share();
+          const sdata: any = res.data();
+          retVal.id = res.id;
+          retVal.name = sdata.name;
+          this.ngFs.collection('sharestations').ref.where('shareid', '==', retVal.id).get().then(srres => {
+            let stnCounter = srres.size;
+            srres.forEach(doc => {
+              const stnshrdata = doc.data();
+              stnshrdata.stationRef.get().then(stndoc => {
+                const id = stndoc.id;
+                const stndata = stndoc.data();
+                const newStation = new ShareStation({id, ...stndata});
+                if (existingStations.indexOf(id) >= 0) {
+                  newStation.alreadyexists = true;
+                  newStation.selected = false;
+                }
+                retVal.stations.push(newStation);
+                stnCounter--;
+                if (stnCounter === 0) {
+                  resolve(retVal);
+                }
+              });
             });
           });
         });
@@ -189,6 +198,27 @@ export class ShareStationService {
     const ref = this.ngFs.doc(`shares/${id}`).snapshotChanges();
     ref.subscribe(value => {
 
+    });
+  }
+  private getMyStationsList() {
+    return new Promise<Array<string>>((resolve, reject) => {
+      const retVal: string[] = new Array<string>();
+      this.ngFs.collection('userstations').ref.where('userid', '==', this.usrSrvc.currentUser.id).get().then(res => {
+        if (res.size > 0) {
+          let stnCounter = res.size;
+          res.forEach(element => {
+            const usData = element.data();
+            retVal.push(usData.stationRef.id);
+            stnCounter--;
+            if (stnCounter === 0) {
+              resolve(retVal);
+            }
+          });
+        } else {
+          resolve(retVal);
+        }
+
+      });
     });
   }
 }
