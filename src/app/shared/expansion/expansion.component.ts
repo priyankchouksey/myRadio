@@ -12,6 +12,8 @@ export class ExpansionComponent implements OnInit {
   expanded: boolean;
   @Input('hidetitle')
   hidetitle: boolean;
+  @Input('menu')
+  menu: any;
 
   constructor() { }
 
@@ -19,5 +21,8 @@ export class ExpansionComponent implements OnInit {
   }
   onClick() {
     this.expanded = !this.expanded;
+  }
+  onMenuClick(type: string) {
+
   }
 }

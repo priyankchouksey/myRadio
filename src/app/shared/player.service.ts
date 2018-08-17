@@ -29,7 +29,7 @@ export class PlayerService implements OnDestroy {
       this.audioPlayer.src = '';
       this.playList[this.currentIndex].playing = false;
     }
-    if (station) { this.addToList(station); } else { station = this.playList[this.currentIndex]; }
+    if (station) { this.currentIndex = this.addToList(station); } else { station = this.playList[this.currentIndex]; }
     this.informSubject('streamdata', 'Connecting...');
     this.playurlsvc.parseUrl(station.playurl).then(url => {
       this.audioPlayer.src = url as string;
@@ -94,10 +94,12 @@ export class PlayerService implements OnDestroy {
   addToList(station: Station) {
     let index = this.playList.findIndex(item => item.id === station.id);
     if (index < 0) {
-      this.playList.unshift(station);
-      index = 0;
+      this.playList.push(station);
+      index = this.playList.length - 1;
     }
-    this.currentIndex = index;
+    if (this.currentIndex === -1 && this.playList.length === 1) {
+      this.currentIndex = 0;
+    }
     this.informSubject('listupdate', '');
     return index;
   }

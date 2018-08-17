@@ -89,6 +89,9 @@ export class StationsService {
       website: data.website ? data.website : '',
       createdate: data.createdate,
       createdby: data.createdby,
+      callnumber: data.callnumber ? data.callnumber : '',
+      language: data.language ? data.language : '',
+      genre: data.genre ? data.genre : '',
       active: true
     };
     return new Promise((resolve, reject) => {
@@ -168,12 +171,15 @@ export class StationsService {
     const statData: any = {
       name: data.name,
       frequency: data.frequency,
-      assistantkeyword: data.assistKeyword,
+      assistantkeyword: data.assistKeyword ? data.assistKeyword : '',
       playurl: data.playurl,
-      state: data.geo.state,
-      city: data.geo.city,
+      state: data.geo.state ? data.geo.state : '',
+      city: data.geo.city ? data.geo.city : '',
       logo: data.logo,
-      country: data.geo.country
+      country: data.geo.country ? data.geo.country : '',
+      callnumber: data.callnumber ? data.callnumber : '',
+      language: data.language ? data.language : '',
+      genre: data.genre ? data.genre : ''
     };
     return this.getStation(data.id).update(statData);
   }

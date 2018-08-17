@@ -40,7 +40,7 @@
     <button class="share-btn" mat-raised-button (click)="copytoClipboard(shareURL)" [disabled]="shareData.shareUrl === undefined">copy</button>
   </div> -->
 <mat-dialog-actions align="end">
-  <button mat-raised-button mat-dialog-close>
+  <button mat-raised-button (click)="closeDialog()">
     {{shareSaved ? 'Close' : 'cancel'}}
   </button>
 </mat-dialog-actions>

@@ -46,6 +46,9 @@ export class PlayerComponent implements OnInit {
         break;
       }
     });
+    if (this.playerSrvc.currentIndex > -1) {
+      this.currentStation = this.playerSrvc.playList[this.playerSrvc.currentIndex];
+    }
     this.setMediaSession();
   }
   setMediaSession() {

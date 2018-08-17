@@ -16,6 +16,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 @NgModule({
   imports: [MatButtonModule,
     MatToolbarModule,
@@ -33,7 +35,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTabsModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatAutocompleteModule
   ],
   exports: [MatButtonModule,
     MatToolbarModule,
@@ -51,7 +54,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTabsModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialModule {}

@@ -29,7 +29,7 @@ export class ShareStationComponent implements OnInit, AfterViewInit {
   constructor(private usrSrvc: UserService,
     private stnSrvc: StationsService,
     private dialogRef: MatDialogRef<ShareStationComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: Array<ShareStation>,
+    @Inject(MAT_DIALOG_DATA) private data: any,
     private shrStnSrvc: ShareStationService) {
       this.shareData = new Share();
      }
@@ -45,8 +45,8 @@ export class ShareStationComponent implements OnInit, AfterViewInit {
 
     if (this.data) {
       // Sharing a single station
-      this.shareData.stations = this.data;
-      this.shareData.name = this.data[0].name;
+      this.shareData.stations = this.data.stations;
+      this.shareData.name = this.data.name;
       this.showSelection = false;
     } else {
       // sharing a list
@@ -58,8 +58,8 @@ export class ShareStationComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     // this.selectList.selectAll();
   }
-  closeDialog(isClosedCliecked: boolean) {
-    this.dialogRef.close(isClosedCliecked);
+  closeDialog() {
+    this.dialogRef.close(this.shareSaved);
   }
   save() {
     this.shrStnSrvc.saveShare(this.shareData).then(() => {

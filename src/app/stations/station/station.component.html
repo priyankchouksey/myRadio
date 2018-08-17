@@ -18,6 +18,25 @@
           </mat-form-field>
         </div>
       </div>
+      <div class="container">
+        <mat-form-field class="section-3col">
+          <input matInput placeholder="Call Number" type="text" [(ngModel)] = "station.callnumber">
+        </mat-form-field>
+        <mat-form-field class="section-3col">
+          <!-- <mat-select placeholder="Language" [formControl] = "lngCtrl"> -->
+          <input type="text" placeholder="Language" aria-label="Language" matInput [formControl]="lngCtrl" [matAutocomplete]="autolang">
+          <mat-autocomplete #autolang="matAutocomplete" [displayWith]="display">
+            <mat-option *ngFor="let item of filteredLanguages | async" [value]="item">{{item.title}}</mat-option>
+          </mat-autocomplete>
+          <!-- </mat-select> -->
+        </mat-form-field>
+        <mat-form-field class="section-3col">
+          <input type="text" placeholder="Genre" aria-label="Genre" matInput [formControl]="genCtrl" [matAutocomplete]="autogen">
+          <mat-autocomplete #autogen="matAutocomplete" [displayWith]="display">
+            <mat-option *ngFor="let item of filteredGenres | async" [value]="item">{{item.title}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
       <mat-form-field>
         <input matInput placeholder="Player URL" type="url" [(ngModel)] = "station.playurl" required #url="ngModel">
       </mat-form-field>

@@ -57,3 +57,6 @@ mat-selection-list:focus {
 mat-form-field{
   width: 100%;
 }
+.mat-dialog-content {
+  max-height: 200px;
+}

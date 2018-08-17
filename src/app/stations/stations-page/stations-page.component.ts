@@ -12,6 +12,8 @@ import { ManageSharesComponent } from '../manage-shares/manage-shares.component'
 import { ShareStation } from '../../shared/station-share';
 import * as _ from 'underscore';
 import { ConfirmationDialogComponent } from '../../core/confirmation-dialog/confirmation-dialog.component';
+import { SearchPipe } from '../../pipes/search.pipe';
+import { GroupbyPipe } from '../../pipes/groupby.pipe';
 
 @Component({
   selector: 'app-stations-page',
@@ -37,7 +39,7 @@ export class StationsPageComponent implements OnInit, OnDestroy {
       this.modifyStation(new Station());
     });
     this.evtSrvc.subscribe('SHARE_STATION').subscribe(value => {
-      this.shareAll();
+      this.onShareAllClick();
     });
     this.evtSrvc.subscribe('MANAGE_SHARE').subscribe(value => {
       this.dialog.open(ManageSharesComponent);
@@ -78,7 +80,6 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     }
   }
   changeFav(station: Station) {
-    station.favourite = !station.favourite;
     this.stationSrvc.updateUserStation(station).then(() => {
       if (station.favourite) {
         this.playerSrvc.addToList(station);
@@ -116,12 +117,14 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     dlg.afterClosed().subscribe(data => {
       switch (data.button) {
         case 1:
-          this.stationSrvc.removeUserStation(station, false);
-          this.refreshStations();
+          this.stationSrvc.removeUserStation(station, false).then(() => {
+            this.refreshStations();
+          });
           break;
         case 2:
-          this.stationSrvc.delete(station);
-          this.refreshStations();
+          this.stationSrvc.delete(station).then(() => {
+            this.refreshStations();
+          });
           break;
         default:
           break;
@@ -135,7 +138,7 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     _.extend(shrStn, station);
     this.dialog.open(ShareStationComponent, {
       disableClose: true,
-      data: [shrStn]
+      data: {'stations': [shrStn], 'name': station.name}
     });
   }
   toggleAddtoShare(station: Station) {
@@ -145,10 +148,24 @@ export class StationsPageComponent implements OnInit, OnDestroy {
       this.shrStnSrvc.add(station);
     }
   }
-  shareAll() {
-    this.dialog.open(ShareStationComponent, {
+  onShareAllClick() {
+     const dlg = this.dialog.open(ShareStationComponent, {
       disableClose: true
     });
+    dlg.afterClosed().subscribe(isSaved => {
+      if (isSaved) {
+        this.myStations.forEach(element => {
+          if (element.addedtoshare) {
+            element.addedtoshare = false;
+            this.shrStnSrvc.remove(element);
+          }
+        });
+      }
+    });
+  }
+  onFavClick(station: Station) {
+    station.favourite = !station.favourite;
+    this.changeFav(station);
   }
   doFilter(value: string) {
     if (value) {
@@ -163,5 +180,38 @@ export class StationsPageComponent implements OnInit, OnDestroy {
     this.searchText = null;
     this.showFilterLabel = false;
   }
-
+  onMenuClick(action: string, searchText: string, groupText: string, groupKey: string) {
+    const sp = new SearchPipe();
+    const spRes = sp.transform(this.myStations, searchText);
+    const gp = new GroupbyPipe();
+    const gpRes: any = gp.transform(spRes, groupText);
+    const currentFilter = gpRes.find(value => value.key === groupKey);
+    switch (action) {
+      case 'share':
+        this.shareFiltered(currentFilter.value, groupKey);
+        break;
+      case 'queue':
+        currentFilter.value.forEach(element => {
+          element.favourite = true;
+          this.changeFav(element);
+        });
+        break;
+    }
+  }
+  private shareFiltered(stations: Array<Station>, shareName) {
+    let stnCounter = stations.length;
+    const shrstnList: Array<ShareStation> = Array<ShareStation>();
+    stations.forEach(element => {
+      let shrStn: ShareStation = new ShareStation();
+      _.extend(shrStn, element);
+      shrstnList.push(shrStn);
+      stnCounter--;
+      if (stnCounter === 0) {
+        this.dialog.open(ShareStationComponent, {
+          disableClose: true,
+          data: {'stations': shrstnList, 'name': shareName}
+        });
+      }
+    });
+  }
 }

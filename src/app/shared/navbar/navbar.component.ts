@@ -18,7 +18,7 @@ import { PreferencesComponent } from '../../core/preferences/preferences.compone
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-  @ViewChild('drawer') elRef;
+  @ViewChild('drawer') elDrawerRef;
   @ViewChild('searchBar') elSearchbarRef;
   showDraw: boolean;
   showSearch: boolean;
@@ -29,11 +29,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event', '$event.target'])
   onClick(event: MouseEvent, targetElement: HTMLElement): void {
     if (this.showingMe) { return; }
-      if (!targetElement || !this.elRef || !this.elSearchbarRef) {
+      if (!targetElement || !(this.elDrawerRef || this.elSearchbarRef)) {
           return;
       }
       if (this.showDraw) {
-        const clickedInside = this.elRef.nativeElement.contains(targetElement);
+        const clickedInside = this.elDrawerRef.nativeElement.contains(targetElement);
         if (!clickedInside) {
           this.showDraw = false;
         }

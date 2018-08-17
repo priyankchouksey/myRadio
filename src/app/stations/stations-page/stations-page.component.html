@@ -10,7 +10,7 @@
 <div *ngIf="myStations.length > 0" [ngClass]="{'pad-search' : showFilterLabel}">
   <!-- <div *ngFor="let stnCol of ((myStations | search: searchText) | groupby: 'city')">
     <button class="group-header">{{stnCol.key}}</button> -->
-    <app-expansion *ngFor="let stnCol of ((myStations | search: searchText) | groupby: groupByText)" [title]="stnCol.key" [expanded]="true" [hidetitle]="stnCol.key === 'none'">
+    <app-expansion *ngFor="let stnCol of ((myStations | search: searchText) | groupby: groupByText)" [title]="stnCol.key" [expanded]="true" [hidetitle]="stnCol.key === 'none'" [menu]="expmenu">
       <section fxLayout="row" fxLayout.xs="column">
         <mat-card *ngFor="let station of stnCol.value">
           <mat-card-content>
@@ -19,7 +19,7 @@
             </div>
           </mat-card-content>
           <div class="content">
-            <h2>{{station.name}}</h2>
+            <h2 class="ellipsis">{{station.name}}</h2>
             <small>{{station.frequency}}{{station.geo.city ? ' &bull; ' + station.geo.city : ''}}{{station.geo.state ? ', ' + station.geo.state : ''}}</small>
             <mat-divider></mat-divider>
             <mat-card-actions align="end">
@@ -27,7 +27,7 @@
                 <mat-icon>{{station.playing ? 'stop' : 'play_arrow'}}</mat-icon>
               </button>
               <span class="spacer"></span>
-              <button mat-icon-button (click)="changeFav(station)">
+              <button mat-icon-button (click)="onFavClick(station)">
                   <!-- <mat-icon *ngClass="{'green-icon': station.favourite, 'white-icon': !station.faourite}">playlist_add</mat-icon> -->
                   <mat-icon [color]="station.favourite ? 'accent': ''" >{{station.favourite ? 'playlist_add_check' : 'playlist_add'}}</mat-icon>
                 </button>
@@ -57,7 +57,7 @@
                   <mat-icon>check_circle</mat-icon>
                   <span>{{station.addedtoshare ? 'Remove from': 'Add to'}} share list</span>
                 </button>
-                <button mat-menu-item (click)="shareAll()">
+                <button mat-menu-item (click)="onShareAllClick()">
                   <mat-icon>send</mat-icon>
                   <span>Share all selected</span>
                 </button>
@@ -66,7 +66,18 @@
           </div>
         </mat-card>
       </section>
+      <mat-menu #expmenu="matMenu">
+        <button mat-menu-item (click)="onMenuClick('share', searchText, groupByText, stnCol.key)">
+          <mat-icon>share</mat-icon>
+          <span>Share All</span>
+        </button>
+        <button mat-menu-item (click)="onMenuClick('queue', searchText, groupByText, stnCol.key)">
+          <mat-icon>edit</mat-icon>
+          <span>Add all to Queue</span>
+        </button>
+      </mat-menu>
     </app-expansion>
+
   <!-- </div> -->
   <app-player></app-player>
 </div>

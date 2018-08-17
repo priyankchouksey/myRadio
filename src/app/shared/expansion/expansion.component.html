@@ -1,4 +1,11 @@
 <div>
-  <button class="group-header" (click)="onClick()" [ngClass]="{'group-header-collapsed' : !expanded}" *ngIf="!hidetitle">{{title}}</button>
+  <div class="btn-container" *ngIf="!hidetitle">
+    <button class="menu-btn" mat-icon-button align="start" [matMenuTriggerFor]="menu">
+      <mat-icon class="menu-icon">more_vert</mat-icon>
+    </button>
+    <button class="group-header" (click)="onClick()" [ngClass]="{'group-header-collapsed' : !expanded}" >
+      {{title}}
+    </button>
+  </div>
   <ng-content *ngIf="expanded"></ng-content>
 </div>

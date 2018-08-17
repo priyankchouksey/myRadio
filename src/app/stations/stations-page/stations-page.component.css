@@ -87,3 +87,9 @@ mat-divider {
 .pad-search {
   padding-top: 10px;
 }
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+}

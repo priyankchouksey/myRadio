@@ -7,7 +7,7 @@
   background-color: #eee;
   color: #444;
   cursor: pointer;
-  width: 100%;
+  width: calc(100% - 35px);
   border: none;
   text-align: left;
   outline: none;
@@ -26,4 +26,14 @@
   /* max-height: 0; */
   overflow: hidden;
   transition: height 0.2s ease-out;
+}
+.menu-btn {
+  height: 35px;
+  width: 35px;
+}
+.menu-icon {
+  margin-top: -8px;
+}
+.btn-container {
+  background-color: #eee;
 }
