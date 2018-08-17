@@ -47,7 +47,7 @@ export class ShareStationComponent implements OnInit, AfterViewInit {
       // Sharing a single station
       this.shareData.stations = this.data.stations;
       this.shareData.name = this.data.name;
-      this.showSelection = false;
+      this.showSelection = true;
     } else {
       // sharing a list
       this.shareData.stations = <Array<ShareStation>> this.shrStnSrvc.getShareStationList();
